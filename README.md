@@ -1,0 +1,2 @@
+# MedTriage
+Sistema de triagem 
