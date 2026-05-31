@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedTriage - Triagem Inteligente (Híbrida)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Estilos semelhantes aos anteriores - mantendo consistência visual */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      min-height:100vh;
+      background:radial-gradient(circle at top, #133b5c 0%, #08131d 45%, #000000 100%);
+      padding:30px 20px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:absolute;
+      width:500px;
+      height:500px;
+      background:rgba(0,255,150,.08);
+      filter:blur(120px);
+      top:-120px;
+      right:-100px;
+      z-index:0;
+    }
+    body::after{
+      content:"";
+      position:absolute;
+      width:450px;
+      height:450px;
+      background:rgba(0,120,255,.1);
+      filter:blur(120px);
+      bottom:-150px;
+      left:-120px;
+      z-index:0;
+    }
+    .container {
+      position:relative;
+      z-index:1;
+      max-width:1200px;
+      margin:0 auto;
+      background:rgba(12,18,28,.82);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow:0 0 40px rgba(0,0,0,.6),0 0 20px rgba(0,180,255,.08);
+    }
+    .header {
+      background:linear-gradient(135deg,#008cff,#00b7ff);
+      padding:30px;
+      text-align:center;
+      color:white;
+    }
+    .header h2 { font-size:30px; font-weight:800; margin-bottom:8px; }
+    .header p { opacity:.95; }
+    /* Informações do paciente */
+    .paciente-info {
+      background:rgba(0,0,0,.3);
+      padding:20px 30px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .paciente-info h3 { color:#00b7ff; margin-bottom:18px; }
+    .paciente-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:15px;
+    }
+    .info-item {
+      background:rgba(0,0,0,.35);
+      padding:14px 16px;
+      border-radius:24px;
+      border-left:4px solid #00b7ff;
+    }
+    .info-label { color:#00b7ff; font-size:12px; font-weight:700; text-transform:uppercase; }
+    .info-value { margin-top:6px; color:white; font-weight:600; }
+    /* Área de seleção de sintomas */
+    .form-body { padding:30px; }
+    .sintomas-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      gap:25px;
+      margin:25px 0;
+    }
+    .categoria {
+      padding:20px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .categoria h3 { color:white; font-size:18px; margin-bottom:16px; }
+    .grid-opcoes {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:12px;
+    }
+    label {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:40px;
+      background:rgba(0,0,0,.3);
+      border:1px solid rgba(255,255,255,.12);
+      cursor:pointer;
+      transition:.15s;
+      color:#ddd;
+      font-size:14px;
+      font-weight:500;
+    }
+    label:hover {
+      transform:translateY(-2px);
+      background:rgba(0,140,255,.2);
+      border-color:#00b7ff;
+    }
+    input[type="checkbox"] { width:18px; height:18px; accent-color:#008cff; }
+    /* Preview da prioridade */
+    .prioridade-preview {
+      margin-top:25px;
+      background:rgba(0,0,0,.45);
+      border:1px solid rgba(0,180,255,.4);
+      border-radius:28px;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+    .prioridade-badge {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      min-width:260px;
+      padding:16px 38px;
+      border-radius:50px;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:.5px;
+      box-shadow:0 8px 24px rgba(0,0,0,.25);
+      transition:.2s;
+    }
+    .verde { background:#22c55e; color:white; }
+    .amarelo { background:#eab308; color:black; }
+    .vermelho { background:#ef4444; color:white; }
+    /* Botões */
+    .btn-group {
+      display:flex;
+      gap:16px;
+      margin-top:20px;
+      flex-wrap:wrap;
+    }
+    .btn {
+      flex:1;
+      border:none;
+      border-radius:60px;
+      padding:16px;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg,#008cff,#00b7ff);
+      color:white;
+      box-shadow:0 8px 20px rgba(0,140,255,.3);
+    }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,140,255,.4); }
+    .btn-secondary {
+      background:rgba(255,255,255,.05);
+      color:#ddd;
+    }
+    .btn-secondary:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); }
+    footer {
+      text-align:center;
+      padding:20px;
+      font-size:12px;
+      color:#8aa0ae;
+      background:rgba(0,0,0,.3);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>🩺 Triagem Inteligente (Híbrida)</h2>
+    <p>Primeiro aplica regras booleanas do administrador; se nenhuma, usa pontuação por pesos.</p>
+  </div>
+  <div class="paciente-info">
+    <h3>📋 Dados do Paciente</h3>
+    <div id="pacienteDetails" class="paciente-grid"></div>
+  </div>
+  <div class="form-body">
+    <div id="sintomasContainer"></div>
+    <div class="prioridade-preview">
+      <div id="prioridadeBadge" class="prioridade-badge verde">🟢 LEVE</div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="window.location.href='afericao.html'">← Voltar para Aferição</button>
+      <button class="btn btn-primary" onclick="finalizarTriagem()">✅ Finalizar Triagem</button>
+    </div>
+  </div>
+  <footer>MedTriage © Classificação híbrida: regras do administrador + pesos.</footer>
+</div>
+
+<script>
+  // =================== CATEGORIAS DE SINTOMAS ===================
+  // Cada categoria tem cor, nome e lista de sintomas com ID, nome e peso
+  const categoriasSintomas = {
+    graves: {
+      cor: 'rgba(239,68,68,.2)',
+      nome: '🔴 GRAVE',
+      itens: [
+        { id: 'parada_cardiaca', nome: 'Parada Cardíaca', peso: 200 },
+        { id: 'dificuldade_respirar_grave', nome: 'Dificuldade Respiratória Grave', peso: 180 },
+        { id: 'fratura_exposta', nome: 'Fratura Exposta', peso: 170 },
+        { id: 'convulsao', nome: 'Convulsão', peso: 160 },
+        { id: 'hemorragia', nome: 'Hemorragia Intensa', peso: 160 },
+        { id: 'queimadura_3_grau', nome: 'Queimadura 3º Grau', peso: 150 },
+        { id: 'dor_peito_intensa', nome: 'Dor no Peito Intensa', peso: 140 },
+        { id: 'confusao_mental', nome: 'Confusão Mental', peso: 130 },
+        { id: 'alucinacoes', nome: 'Alucinações', peso: 120 },
+        { id: 'envenenamento', nome: 'Envenenamento', peso: 120 }
+      ]
+    },
+    moderados: {
+      cor: 'rgba(234,179,8,.2)',
+      nome: '🟡 MODERADO',
+      itens: [
+        { id: 'vomitos_persistentes', nome: 'Vômitos Persistentes', peso: 80 },
+        { id: 'desidratacao', nome: 'Desidratação', peso: 75 },
+        { id: 'dor_abdominal_intensa', nome: 'Dor Abdominal Intensa', peso: 70 },
+        { id: 'desmaio_recente', nome: 'Desmaio Recente', peso: 65 },
+        { id: 'cefaleia_intratavel', nome: 'Dor de Cabeça Intensa', peso: 60 },
+        { id: 'palpitacoes', nome: 'Palpitações', peso: 55 },
+        { id: 'tontura_persistente', nome: 'Tontura Persistente', peso: 50 },
+        { id: 'anemia_grave', nome: 'Anemia Grave', peso: 45 },
+        { id: 'sangramento_nasal', nome: 'Sangramento Nasal', peso: 40 }
+      ]
+    },
+    leves: {
+      cor: 'rgba(34,197,94,.2)',
+      nome: '🟢 LEVE',
+      itens: [
+        { id: 'dor_cabeca', nome: 'Dor de Cabeça', peso: 20 },
+        { id: 'tosse_persistente', nome: 'Tosse Persistente', peso: 18 },
+        { id: 'dor_garganta', nome: 'Dor de Garganta', peso: 12 },
+        { id: 'fadiga', nome: 'Fadiga', peso: 10 },
+        { id: 'dor_lombar', nome: 'Dor Lombar', peso: 8 },
+        { id: 'insonia', nome: 'Insônia', peso: 6 },
+        { id: 'ansiedade', nome: 'Ansiedade', peso: 5 },
+        { id: 'coriza', nome: 'Coriza', peso: 3 },
+        { id: 'espirros', nome: 'Espirros', peso: 2 }
+      ]
+    }
+  };
+
+  // Variáveis globais para pontuação extra (vinda da aferição)
+  let pontuacaoExtra = 0;
+  let sintomasAfericaoIds = []; // IDs dos sintomas detectados na aferição (pressao_alta, febre_alta)
+
+  // =================== RENDERIZA OS SINTOMAS NA TELA ===================
+  function carregarSintomas() {
+    let html = '<div class="sintomas-grid">';
+    for (const [tipo, config] of Object.entries(categoriasSintomas)) {
+      html += `<div class="categoria" style="background:${config.cor}"><h3>${config.nome}</h3><div class="grid-opcoes">`;
+      config.itens.forEach(sintoma => {
+        html += `<label><input type="checkbox" class="sintoma-check" data-sintoma="${sintoma.id}" data-peso="${sintoma.peso}" onchange="atualizarPrioridade()"> ${sintoma.nome}</label>`;
+      });
+      html += `</div></div>`;
+    }
+    html += '</div>';
+    document.getElementById('sintomasContainer').innerHTML = html;
+  }
+
+  // =================== EXIBE OS DADOS DO PACIENTE (incluindo condições) ===================
+  function carregarDadosPaciente() {
+    const paciente = JSON.parse(localStorage.getItem('pacienteData'));
+    if (!paciente) { window.location.href = 'cadastro.html'; return; }
+    const condicoesTexto = (paciente.condicoes && paciente.condicoes.length) ? paciente.condicoes.join(', ') : 'Nenhuma';
+    document.getElementById('pacienteDetails').innerHTML = `
+      <div class="info-item"><div class="info-label">Nome</div><div class="info-value">${paciente.nome}</div></div>
+      <div class="info-item"><div class="info-label">Telefone</div><div class="info-value">${paciente.telefone}</div></div>
+      <div class="info-item"><div class="info-label">CPF</div><div class="info-value">${paciente.cpf}</div></div>
+      <div class="info-item"><div class="info-label">Especialidade</div><div class="info-value">${paciente.especialidade}</div></div>
+      <div class="info-item"><div class="info-label">Sexo</div><div class="info-value">${paciente.sexo}</div></div>
+      <div class="info-item"><div class="info-label">Condições</div><div class="info-value">${condicoesTexto}</div></div>
+    `;
+  }
+
+  // =================== CARREGA PESOS DA AFERIÇÃO ===================
+  function carregarPesosAfericao() {
+    const afericao = JSON.parse(localStorage.getItem('afericaoData'));
+    sintomasAfericaoIds = [];
+    pontuacaoExtra = 0;
+    if (afericao) {
+      const pressao = afericao.pressao;
+      if (pressao) {
+        const [sist, diast] = pressao.split('/').map(Number);
+        if (sist >= 110 || diast >= 80) {
+          sintomasAfericaoIds.push('pressao_alta');
+          pontuacaoExtra += 40; // Peso para pressão elevada
+        }
+      }
+      if (afericao.temperatura && afericao.temperatura >= 37.2) {
+        sintomasAfericaoIds.push('febre_alta');
+        pontuacaoExtra += 30; // Peso para febre
+      }
+    }
+    const paciente = JSON.parse(localStorage.getItem('pacienteData'));
+    if (paciente && paciente.pesoCondicoes) pontuacaoExtra += paciente.pesoCondicoes; // Condições crônicas
+  }
+
+  // =================== OBTÉM TODOS OS IDs DE SINTOMAS (manuais + aferição) ===================
+  function obterIdsSintomasPaciente() {
+    const ids = [...sintomasAfericaoIds]; // Começa com os da aferição
+    document.querySelectorAll('.sintoma-check:checked').forEach(cb => ids.push(cb.getAttribute('data-sintoma')));
+    return ids;
+  }
+
+  // =================== AVALIA REGRAS BOOLEANAS DO ADMIN ===================
+  // Retorna a cor (vermelho/amarelo/verde) se alguma regra for atendida, ou null
+  function avaliarRegrasBooleanas(sintomasIds) {
+    const regrasStr = localStorage.getItem('regrasMedTriage');
+    if (!regrasStr) return null;
+    let regras;
+    try { regras = JSON.parse(regrasStr); } catch(e) { return null; }
+    if (!Array.isArray(regras) || regras.length === 0) return null;
+    const sintomasSet = new Set(sintomasIds);
+    for (const regra of regras) {
+      const obrigatorios = regra.sintomasObrigatorios;
+      if (!obrigatorios || obrigatorios.length === 0) continue;
+      // Verifica se todos os sintomas obrigatórios estão presentes
+      if (obrigatorios.every(sintomaId => sintomasSet.has(sintomaId))) return regra.definirComo;
+    }
+    return null;
+  }
+
+  // =================== ATUALIZA O BADGE DE PRIORIDADE DINAMICAMENTE ===================
+  function atualizarPrioridade() {
+    const sintomasIds = obterIdsSintomasPaciente();
+    const riscoPorRegra = avaliarRegrasBooleanas(sintomasIds);
+    let risco = null;
+    if (riscoPorRegra) {
+      risco = riscoPorRegra; // Prioridade definida por regra do admin
+    } else {
+      // Calcula pontuação total (sintomas manuais + aferição + condições)
+      let pontuacaoTotal = pontuacaoExtra;
+      document.querySelectorAll('.sintoma-check:checked').forEach(box => pontuacaoTotal += parseInt(box.getAttribute('data-peso')));
+      // Define risco baseado na pontuação
+      if (pontuacaoTotal >= 150) risco = 'vermelho';
+      else if (pontuacaoTotal >= 70) risco = 'amarelo';
+      else risco = 'verde';
+    }
+    const badge = document.getElementById('prioridadeBadge');
+    if (risco === 'vermelho') { badge.className = 'prioridade-badge vermelho'; badge.innerText = '🔴 GRAVE'; }
+    else if (risco === 'amarelo') { badge.className = 'prioridade-badge amarelo'; badge.innerText = '🟡 MODERADO'; }
+    else { badge.className = 'prioridade-badge verde'; badge.innerText = '🟢 LEVE'; }
+  }
+
+  // =================== FINALIZA TRIAGEM E ADICIONA À FILA ===================
+  function finalizarTriagem() {
+    const checkboxes = document.querySelectorAll('.sintoma-check:checked');
+    if (checkboxes.length === 0) { alert('Selecione pelo menos um sintoma.'); return; }
+    
+    // Sintomas manuais (selecionados nesta tela)
+    const sintomasManuais = Array.from(checkboxes).map(item => item.parentElement.innerText.trim());
+    
+    // Dados do paciente (do cadastro)
+    const paciente = JSON.parse(localStorage.getItem('pacienteData'));
+    const condicoesNomes = paciente.condicoes || []; // Condições pré-existentes
+    
+    // Sintomas da aferição (pressão alta e/ou febre)
+    const sintomasAfericaoNomes = [];
+    if (sintomasAfericaoIds.includes('pressao_alta')) sintomasAfericaoNomes.push('Pressão arterial elevada');
+    if (sintomasAfericaoIds.includes('febre_alta')) sintomasAfericaoNomes.push('Febre alta');
+    
+    // Objeto para regras (todos os sintomas juntos - compatibilidade com regras antigas)
+    const todosSintomasNomes = [...sintomasManuais, ...sintomasAfericaoNomes, ...condicoesNomes];
+    const sintomasObj = {};
+    todosSintomasNomes.forEach(s => { sintomasObj[s] = true; });
+    
+    // Determina o risco final baseado no badge atual
+    const badge = document.getElementById('prioridadeBadge');
+    let risco = 'verde';
+    if (badge.innerText.includes('GRAVE')) risco = 'vermelho';
+    else if (badge.innerText.includes('MODERADO')) risco = 'amarelo';
+    
+    // Calcula pontuação total novamente (para salvar no histórico)
+    let pontuacaoTotal = pontuacaoExtra;
+    checkboxes.forEach(box => pontuacaoTotal += parseInt(box.getAttribute('data-peso')));
+    
+    // ========== CONSTRUIÇÃO DO OBJETO DO PACIENTE NA FILA ==========
+    // Importante: separamos condicoes, sintomas (manuais) e sintomasAfericao
+    const pacienteFila = {
+      nome: paciente.nome,
+      cpf: paciente.cpf,
+      especialidade: paciente.especialidade, // Pediatria, Clínica Geral ou Geriatria
+      risco: risco,
+      condicoes: condicoesNomes,           // Condições crônicas do cadastro
+      sintomas: sintomasManuais,           // Apenas os sintomas marcados na triagem
+      sintomasAfericao: sintomasAfericaoNomes, // Pressão alta / febre
+      pontuacao: pontuacaoTotal,
+      dataAtendimento: new Date().toISOString(),
+      afericao: JSON.parse(localStorage.getItem('afericaoData')),
+      sexo: paciente.sexo
+    };
+    
+    // Recupera a fila atual do localStorage, remove duplicatas (mesmo CPF) e adiciona o novo
+    let fila = JSON.parse(localStorage.getItem('fila')) || [];
+    fila = fila.filter(p => p.cpf !== paciente.cpf);
+    fila.push(pacienteFila);
+    localStorage.setItem('fila', JSON.stringify(fila));
+    
+    // Mensagem de confirmação
+    alert(`✅ Paciente cadastrado na fila com sucesso!\n\n📌 Classificação: ${badge.innerText}\n👨‍⚕️ Especialidade: ${paciente.especialidade}\n🩺 Sintomas registrados: ${sintomasManuais.length}`);
+    
+    // Redireciona para o painel principal
+    window.location.href = 'painel.html';
+  }
+
+  // =================== INICIALIZAÇÃO DA PÁGINA ===================
+  window.onload = () => {
+    carregarDadosPaciente();   // Exibe dados do paciente
+    carregarSintomas();        // Renderiza os checkboxes de sintomas
+    carregarPesosAfericao();   // Adiciona os pesos da aferição e condições
+    atualizarPrioridade();     // Calcula e exibe a prioridade inicial
+  };
+</script>
+</body>
+</html>
