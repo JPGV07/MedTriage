@@ -237,7 +237,7 @@
       </div>
       <!-- Sexo (radio buttons) -->
       <div class="form-group">
-        <label>Sexo *</label>
+        <label>Gênero *</label>
         <div class="sexo-opcoes">
           <label><input type="radio" name="sexo" value="Masculino" required> Masculino</label>
           <label><input type="radio" name="sexo" value="Feminino"> Feminino</label>
@@ -245,7 +245,7 @@
       </div>
       <!-- Condições de saúde (checkboxes com pesos) -->
       <div class="form-group">
-        <label>Condições de Saúde (marque quantas quiser – influenciam a prioridade)</label>
+        <label>Condições de Saúde </label>
         <div class="condicoes-grid" id="condicoesGrid">
           <label><input type="checkbox" class="condicao" value="Gravidez" data-peso="30"> 🤰 Gravidez</label>
           <label><input type="checkbox" class="condicao" value="HIV" data-peso="40"> 🦠 HIV</label>
@@ -336,16 +336,25 @@
   const sexoMasculino = document.querySelector('input[name="sexo"][value="Masculino"]');
   const sexoFeminino = document.querySelector('input[name="sexo"][value="Feminino"]');
   const chkGravidez = document.querySelector('.condicao[value="Gravidez"]');
-  
+  const lblGravidez = chkGravidez.parentElement;
   // Função que desabilita a opção "Gravidez" se o sexo for masculino
-  function toggleGravidez() {
-    if (sexoMasculino.checked) {
-      chkGravidez.disabled = true;
-      chkGravidez.checked = false; // Remove o check se houver
-    } else {
-      chkGravidez.disabled = false;
+    function toggleGravidez() {
+      if (sexoMasculino.checked) {
+        chkGravidez.disabled = true;
+        chkGravidez.checked = false;
+
+        lblGravidez.style.opacity = "0.4";
+        lblGravidez.style.background = "#000";
+        lblGravidez.style.cursor = "not-allowed";
+      } else {
+        chkGravidez.disabled = false;
+
+        lblGravidez.style.opacity = "1";
+        lblGravidez.style.background = "rgba(255,255,255,0.1)";
+        lblGravidez.style.cursor = "pointer";
+      }
     }
-  }
+
   sexoMasculino.addEventListener('change', toggleGravidez);
   sexoFeminino.addEventListener('change', toggleGravidez);
   toggleGravidez(); // Configura o estado inicial
