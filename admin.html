@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - MedTriage | Regras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* mesmo estilo anterior, mantido */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #133b5c 0%, #08131d 45%, #000000 100%);
+      padding: 30px 20px;
+      color: white;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(12, 18, 28, 0.82);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      padding: 30px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    }
+    h2 { font-size: 26px; font-weight: 800; margin-bottom: 20px; color: #00b7ff; text-align: center; }
+    h3 { font-size: 18px; margin-bottom: 12px; color: #ddd; }
+    .secao { background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 25px; }
+    .sintomas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-bottom: 15px;
+    }
+    .sintomas-grid::-webkit-scrollbar { width: 6px; }
+    .sintomas-grid::-webkit-scrollbar-thumb { background: rgba(0, 183, 255, 0.3); border-radius: 10px; }
+    label {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255, 255, 255, 0.05); padding: 8px 12px;
+      border-radius: 12px; font-size: 13px; cursor: pointer;
+      border: 1px solid transparent; transition: 0.2s;
+    }
+    label:hover { border-color: #00b7ff; background: rgba(0, 183, 255, 0.1); }
+    input[type="checkbox"] { accent-color: #00b7ff; }
+    .config-linha { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px; }
+    .campo { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+    select, input[type="text"] {
+      background: #08131d; border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 12px; border-radius: 12px; color: white; font-family: inherit; font-size: 14px;
+    }
+    select:focus, input[type="text"]:focus { border-color: #00b7ff; outline: none; }
+    .btn {
+      padding: 14px 28px; font-size: 16px; font-weight: 700; border: none;
+      border-radius: 12px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px;
+    }
+    .btn-primary { background: linear-gradient(135deg, #008cff, #00b7ff); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-danger { background: #ef4444; color: white; padding: 6px 12px; font-size: 12px; border-radius: 6px; width: auto; margin: 0; border: none; cursor: pointer; }
+    .tabela-regras { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+    .tabela-regras th, .tabela-regras td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .tabela-regras th { color: #00b7ff; font-weight: 600; }
+    .badge { padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .vermelho { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
+    .amarelo { background: rgba(234, 179, 8, 0.2); color: #fef08a; border: 1px solid #eab308; }
+    .verde { background: rgba(34, 197, 94, 0.2); color: #bbf7d0; border: 1px solid #22c55e; }
+    .btn-sair { background: rgba(255,255,255,0.1); border: none; padding: 8px 20px; border-radius: 40px; color: white; cursor: pointer; margin-left: 15px; }
+    .btn-sair:hover { background: rgba(255,255,255,0.2); }
+    .header-actions { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+    .fila-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .fila-table th, .fila-table td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .fila-table th { color: #00b7ff; }
+    .btn-remover { background: #dc2626; color: white; border: none; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 12px; }
+    .btn-remover:hover { background: #b91c1c; }
+    .coluna-texto { max-width: 200px; white-space: normal; word-break: break-word; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header-actions"><button class="btn-sair" onclick="logout()">Sair</button></div>
+  <h2>⚙️ Painel do Administrador - João</h2>
+  
+  <div class="secao">
+    <h3>1. Selecione os sintomas para combinar:</h3>
+    <div class="sintomas-grid" id="listaSintomasAdmin"></div>
+    <h3>2. Defina o resultado da combinação:</h3>
+    <div class="config-linha">
+      <div class="campo"><label style="background:transparent; padding:0;">Classificação de Risco Target</label><select id="regraCor"><option value="vermelho">🔴 Vermelho (Grave)</option><option value="amarelo">🟡 Amarelo (Moderado)</option><option value="verde">🟢 Verde (Leve)</option></select></div>
+      <div class="campo" style="flex: 2;"><label style="background:transparent; padding:0;"> Regra Do Admin </label><input type="text" id="regraTexto" placeholder="Ex: Encaminhar para a ala respiratória imediatamente..."></div>
+    </div>
+    <button class="btn btn-primary" onclick="salvarNovaRegra()">💾 Gravar Nova Regra Combinada</button>
+  </div>
+  
+  <div class="secao">
+    <h3>📋 Regras Ativas no Sistema</h3>
+    <table class="tabela-regras"><thead><tr><th>Sintomas Combinados</th><th>Resultado</th><th>Instrução Exibida</th><th>Ação</th></tr></thead><tbody id="corpoTabelaRegras"></tbody></table>
+  </div>
+  
+  <div class="secao">
+    <h3>📋 Visualização da Fila Completa (Todas Especialidades) - Admin pode remover</h3>
+    <table class="fila-table" id="tabelaFilaAdmin">
+      <thead><tr><th>Nome</th><th>Sexo</th><th>Prioridade</th><th>Especialidade</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th></tr></thead>
+      <tbody id="corpoTabelaFilaAdmin"><tr><td colspan="8" style="text-align:center;">Carregando...</td></tr></tbody>
+    </table>
+  </div>
+  
+  <button class="btn" style="background: rgba(255,255,255,0.05); color: #ccc;" onclick="location.href='painel.html'">← Voltar ao Painel</button>
+</div>
+
+<script>
+  // =================== LISTA COMPLETA DE SINTOMAS ===================
+  // Sincronizada com a triagem (inclui todos os sintomas de grave, moderado e leve)
+  const todosSintomas = [
+    // Sintomas da aferição
+    'febre_alta', 'pressao_alta',
+    // GRAVES
+    'parada_cardiaca', 'dificuldade_respirar_grave', 'fratura_exposta', 'convulsao',
+    'hemorragia', 'queimadura_3_grau', 'dor_peito_intensa', 'confusao_mental',
+    'alucinacoes', 'dificudade_de_locomocao', 'dificudade_da_fala', 'envenenamento',
+    // MODERADOS
+    'vomitos_persistentes', 'desidratacao', 'dor_abdominal_intensa', 'desmaio_recente',
+    'cefaleia_intratavel', 'palpitacoes', 'tontura_persistente', 'anemia_grave',
+    'sangramento_nasal', 'nauseas_intensas', 'diarreia_aguda', 'visao_embacada',
+    // LEVES
+    'dor_cabeca', 'tosse_persistente', 'dor_garganta', 'fadiga', 'dor_lombar',
+    'insonia', 'ansiedade', 'coriza', 'espirros', 'dor_muscular', 'calafrios', 'mal_estar',
+    // Outros especiais
+    'febre_40', 'febre_38', 'dor_cabeca_forte', 'fadiga_extrema', 'ictericia_grave',
+    'hemoptise', 'convulsao_focal', 'sangramento_nasal_abundante'
+  ];
+
+  function formatarNome(str) {
+    const especiais = {
+      'febre_alta': 'Febre alta (aferição ≥ 37.2°C)',
+      'pressao_alta': 'Pressão arterial elevada (aferição ≥ 110/80)',
+      'febre_40': 'Febre ≥ 40°C',
+      'febre_38': 'Febre 38°C - 39.9°C',
+      'dificudade_de_locomocao': 'Dificuldade de Locomoção',
+      'dificudade_da_fala': 'Dificuldade da Fala',
+      'visao_embacada': 'Visão Embaçada',
+      'parada_cardiaca': 'Parada Cardíaca',
+      'convulsao': 'Convulsão',
+      'hemorragia': 'Hemorragia Intensa',
+      'queimadura_3_grau': 'Queimadura 3º Grau',
+      'dor_peito_intensa': 'Dor no Peito Intensa',
+      'confusao_mental': 'Confusão Mental',
+      'alucinacoes': 'Alucinações',
+      'envenenamento': 'Envenenamento',
+      'vomitos_persistentes': 'Vômitos Persistentes',
+      'desidratacao': 'Desidratação',
+      'dor_abdominal_intensa': 'Dor Abdominal Intensa',
+      'desmaio_recente': 'Desmaio Recente',
+      'cefaleia_intratavel': 'Dor de Cabeça Intensa',
+      'palpitacoes': 'Palpitações',
+      'tontura_persistente': 'Tontura Persistente',
+      'anemia_grave': 'Anemia Grave',
+      'sangramento_nasal': 'Sangramento Nasal',
+      'nauseas_intensas': 'Náuseas intensas',
+      'diarreia_aguda': 'Diarreia aguda',
+      'dor_cabeca': 'Dor de Cabeça',
+      'tosse_persistente': 'Tosse Persistente',
+      'dor_garganta': 'Dor de Garganta',
+      'fadiga': 'Fadiga',
+      'dor_lombar': 'Dor Lombar',
+      'insonia': 'Insônia',
+      'ansiedade': 'Ansiedade',
+      'coriza': 'Coriza',
+      'espirros': 'Espirros',
+      'dor_muscular': 'Dor muscular generalizada',
+      'calafrios': 'Calafrios',
+      'mal_estar': 'Mal-estar geral'
+    };
+    if (especiais[str]) return especiais[str];
+    return str.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  function renderizarSintomasAdmin() {
+    const grid = document.getElementById('listaSintomasAdmin');
+    grid.innerHTML = todosSintomas.map(sintoma => `<label><input type="checkbox" class="admin-sintoma-check" value="${sintoma}"> ${formatarNome(sintoma)}</label>`).join('');
+  }
+
+  function obterRegras() {
+    const salvas = localStorage.getItem('regrasMedTriage');
+    if (salvas) return JSON.parse(salvas);
+    const padrao = [
+      { sintomasObrigatorios: ['febre_alta', 'pressao_alta'], definirComo: 'vermelho', alertaTexto: '⚠️ REGRA ADMIN: Paciente com febre E pressão elevada - risco alto.' },
+      { sintomasObrigatorios: ['febre_40', 'tosse_persistente'], definirComo: 'vermelho', alertaTexto: '⚠️ REGRA ADMIN: Suspeita de pneumonia bacteriana grave.' },
+      { sintomasObrigatorios: ['ansiedade', 'palpitacoes'], definirComo: 'amarelo', alertaTexto: '⚠️ REGRA ADMIN: Crise de pânico ou ansiedade aguda sob monitoramento cardíaco.' },
+      { sintomasObrigatorios: ['coriza', 'espirros', 'dor_garganta'], definirComo: 'verde', alertaTexto: 'ℹ️ REGRA ADMIN: Quadro compatível com virose respiratória simples. Ambulatório.' }
+    ];
+    localStorage.setItem('regrasMedTriage', JSON.stringify(padrao));
+    return padrao;
+  }
+
+  function atualizarTabelaRegras() {
+    const regras = obterRegras();
+    const tabela = document.getElementById('corpoTabelaRegras');
+    if (regras.length === 0) { tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nenhuma regra customizada ativa.</td></tr>'; return; }
+    tabela.innerHTML = regras.map((regra, index) => `
+      <tr>
+        <td><strong>${regra.sintomasObrigatorios.map(formatarNome).join(' + ')}</strong></td>
+        <td><span class="badge ${regra.definirComo}">${regra.definirComo}</span></td>
+        <td><span style="color:#bbb">${regra.alertaTexto}</span></td>
+        <td><button class="btn-danger" onclick="deletarRegra(${index})">Excluir</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function salvarNovaRegra() {
+    const selecionados = Array.from(document.querySelectorAll('.admin-sintoma-check:checked')).map(cb => cb.value);
+    const cor = document.getElementById('regraCor').value;
+    const texto = document.getElementById('regraTexto').value.trim();
+    if (selecionados.length < 2) { alert('Selecione pelo menos 2 sintomas para montar uma combinação de regras!'); return; }
+    if (!texto) { alert('Insira uma mensagem de instrução para os enfermeiros!'); return; }
+    const regras = obterRegras();
+    regras.push({ sintomasObrigatorios: selecionados, definirComo: cor, alertaTexto: `⚠️ REGRA ADMIN: ${texto}` });
+    localStorage.setItem('regrasMedTriage', JSON.stringify(regras));
+    atualizarTabelaRegras();
+    document.querySelectorAll('.admin-sintoma-check').forEach(cb => cb.checked = false);
+    document.getElementById('regraTexto').value = '';
+    alert('Regra integrada com sucesso!');
+  }
+
+  function deletarRegra(index) {
+    const regras = obterRegras();
+    regras.splice(index, 1);
+    localStorage.setItem('regrasMedTriage', JSON.stringify(regras));
+    atualizarTabelaRegras();
+  }
+
+  function verificarAcessoAdmin() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || user.tipo !== 'admin') { alert('Acesso apenas para administradores.'); window.location.href = 'painel.html'; }
+  }
+
+  function logout() { localStorage.removeItem('user'); window.location.href = 'painel.html'; }
+
+  function atualizarTabelaFilaAdmin() {
+    const fila = JSON.parse(localStorage.getItem('fila')) || [];
+    const tbody = document.getElementById('corpoTabelaFilaAdmin');
+    if (fila.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum paciente na fila.</td></tr>'; return; }
+    tbody.innerHTML = fila.map(paciente => {
+      const condicoesLista = (paciente.condicoes && paciente.condicoes.length) ? paciente.condicoes.join(', ') : 'Nenhuma';
+      const sintomasLista = (paciente.sintomas && paciente.sintomas.length) ? paciente.sintomas.join(', ') : 'Nenhum';
+      let regraTexto = '—';
+      if (paciente.regrasAdminAtendidas && paciente.regrasAdminAtendidas.length) {
+        regraTexto = paciente.regrasAdminAtendidas.join('; ');
+        if (regraTexto.length > 60) regraTexto = regraTexto.substring(0, 57) + '...';
+      }
+      return `
+        <tr>
+          <td>${paciente.nome || '—'}</td>
+          <td>${paciente.sexo || 'Não informado'}</td>
+          <td><span class="badge ${paciente.risco}">${paciente.risco.toUpperCase()}</span></td>
+          <td>${paciente.especialidade || '—'}</td>
+          <td class="coluna-texto">${condicoesLista}</td>
+          <td class="coluna-texto">${sintomasLista}</td>
+          <td style="color: #ffaa88;">${regraTexto}</td>
+          <td><button class="btn-remover" onclick="removerPacienteFila('${paciente.cpf}')">🗑️ Remover</button></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function removerPacienteFila(cpf) {
+    if (confirm('Tem certeza que deseja remover este paciente da fila?')) {
+      let fila = JSON.parse(localStorage.getItem('fila')) || [];
+      const novaFila = fila.filter(p => p.cpf !== cpf);
+      if (novaFila.length === fila.length) { alert('Paciente não encontrado.'); return; }
+      localStorage.setItem('fila', JSON.stringify(novaFila));
+      atualizarTabelaFilaAdmin();
+      alert('Paciente removido da fila com sucesso!');
+    }
+  }
+
+  window.onload = function() {
+    verificarAcessoAdmin();
+    renderizarSintomasAdmin();
+    atualizarTabelaRegras();
+    atualizarTabelaFilaAdmin();
+    setInterval(atualizarTabelaFilaAdmin, 3000);
+  };
+</script>
+</body>
+</html>

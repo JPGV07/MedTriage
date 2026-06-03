@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - MedTriage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #133b5c 0%, #08131d 45%, #000000 100%);
+      padding: 20px;
+      position: relative;
+    }
+    body::before, body::after { content: ""; position: absolute; width: 500px; height: 500px; filter: blur(120px); z-index: 0; }
+    body::before { background: rgba(0,255,150,0.08); top: -120px; right: -100px; }
+    body::after { background: rgba(0,120,255,0.10); bottom: -150px; left: -120px; }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 750px;
+      width: 100%;
+      background: rgba(12,18,28,0.82);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 32px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6), 0 0 20px rgba(0,180,255,0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg,#008cff,#00b7ff);
+      padding: 2rem;
+      text-align: center;
+      color: white;
+    }
+    .header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -1px; }
+    .header p { opacity: 0.9; margin-top: 0.5rem; }
+    .form-container { padding: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      color: #e0e0e0;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(239,243,243,0.877);
+      border: 1px solid rgba(245,238,238,0.918);
+      border-radius: 28px;
+      font-size: 1rem;
+      color: rgb(10,10,10);
+      transition: 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #00b7ff;
+      background: rgba(236,233,233,0.918);
+    }
+    .idade-opcoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 8px;
+    }
+    .idade-card {
+      flex: 1;
+      min-width: 140px;
+      background: rgba(5,211,238,0.918);
+      border: 1px solid rgba(16,173,221,0.89);
+      border-radius: 28px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #ddd;
+    }
+    .idade-card.selected {
+      background: linear-gradient(135deg,#1202ec,#0b07f8);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 8px 20px rgba(8,4,245,0.945);
+    }
+    .idade-emoji { font-size: 2rem; }
+    .idade-titulo { font-weight: 700; margin: 8px 0 4px; }
+    .idade-desc { font-size: 12px; opacity: 0.8; }
+    .sexo-opcoes {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .sexo-opcoes label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 10px 18px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .sexo-opcoes input { width: auto; margin: 0; }
+    .btn-pref {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 40px;
+      padding: 10px 18px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    .btn-pref:hover { background: rgba(0,183,255,0.4); transform: scale(1.02); }
+    .condicoes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .condicoes-grid label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    .condicoes-grid input { width: auto; margin: 0; }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      color: #ddd;
+    }
+    .checkbox-group input { width: auto; }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#008cff,#00b7ff);
+      box-shadow: 0 8px 20px rgba(0,140,255,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,140,255,0.4); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      box-shadow: none;
+      margin-top: 1rem;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    small { color: #aaa; font-size: 12px; }
+    /* Modal melhorado */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: linear-gradient(145deg, #0f1a24, #0a1118);
+      border-radius: 32px;
+      max-width: 450px;
+      width: 90%;
+      padding: 28px;
+      border: 1px solid rgba(0,183,255,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,180,255,0.3);
+      animation: fadeInUp 0.3s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-content h3 {
+      color: #00b7ff;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .modal-opcoes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+      max-height: 350px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .modal-opcoes label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 12px 16px;
+      border-radius: 60px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      color: #e0e0e0;
+      transition: 0.2s;
+      border: 1px solid transparent;
+    }
+    .modal-opcoes label:hover {
+      background: rgba(0,183,255,0.2);
+      border-color: #00b7ff;
+      transform: translateX(5px);
+    }
+    .modal-opcoes input {
+      width: 18px;
+      height: 18px;
+      accent-color: #00b7ff;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-save {
+      background: linear-gradient(135deg,#008cff,#00b7ff);
+      color: white;
+    }
+    .btn-close {
+      background: rgba(255,255,255,0.1);
+      color: #ccc;
+    }
+    .btn-close:hover { background: rgba(255,255,255,0.2); }
+    @media (max-width: 600px) {
+      .form-container { padding: 1.5rem; }
+      .idade-card { min-width: 100px; }
+      .condicoes-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📝 Cadastro do Paciente</h1>
+    <p>Preencha seus dados para iniciar a aferição</p>
+  </div>
+  <div class="form-container">
+    <form id="cadastroForm">
+      <div class="form-group">
+        <label>Nome Completo *</label>
+        <input type="text" id="nome" required oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ ]/g,'')">
+      </div>
+      <div class="form-group">
+        <label>Faixa Etária *</label>
+        <div class="idade-opcoes" id="idadeOpcoes">
+          <div class="idade-card" data-faixa="0-17" data-especialidade="Pediatria">
+            <div class="idade-emoji">👶</div>
+            <div class="idade-titulo">0 a 17 anos</div>
+            <div class="idade-desc">Pediatria</div>
+          </div>
+          <div class="idade-card" data-faixa="18-59" data-especialidade="Clínica Geral">
+            <div class="idade-emoji">🧑</div>
+            <div class="idade-titulo">18 a 59 anos</div>
+            <div class="idade-desc">Clínica Geral</div>
+          </div>
+          <div class="idade-card" data-faixa="60+" data-especialidade="Geriatria">
+            <div class="idade-emoji">👴</div>
+            <div class="idade-titulo">60 anos ou mais</div>
+            <div class="idade-desc">Geriatria</div>
+          </div>
+        </div>
+        <input type="hidden" id="faixaEtaria" required>
+        <input type="hidden" id="especialidade">
+      </div>
+      <div class="form-group">
+        <label>Gênero *</label>
+        <div class="sexo-opcoes">
+          <label><input type="radio" name="sexo" value="Masculino" required> Masculino</label>
+          <label><input type="radio" name="sexo" value="Feminino"> Feminino</label>
+          <button type="button" id="btnPreferencias" class="btn-pref">⚙️ Preferências</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Condições de Saúde</label>
+        <div class="condicoes-grid" id="condicoesGrid">
+          <label><input type="checkbox" class="condicao" value="Gravidez" data-peso="30"> 🤰 Gravidez</label>
+          <label><input type="checkbox" class="condicao" value="HIV" data-peso="40"> 🦠 HIV</label>
+          <label><input type="checkbox" class="condicao" value="Doença Mental" data-peso="20"> 🧠 Doença Mental</label>
+          <label><input type="checkbox" class="condicao" value="Diabetes" data-peso="25"> 🍬 Diabetes</label>
+          <label><input type="checkbox" class="condicao" value="Hipertensão" data-peso="30"> ❤️ Hipertensão</label>
+          <label><input type="checkbox" class="condicao" value="Obesidade Mórbida" data-peso="20"> 🍔 Obesidade Mórbida</label>
+          <label><input type="checkbox" class="condicao" value="Asma Grave" data-peso="35"> 🌬️ Asma Grave</label>
+          <label><input type="checkbox" class="condicao" value="Insuficiência Cardíaca" data-peso="50"> 💔 Insuficiência Cardíaca</label>
+          <label><input type="checkbox" class="condicao" value="Doença Renal Crônica" data-peso="45"> 🩺 Doença Renal Crônica</label>
+          <label><input type="checkbox" class="condicao" value="Câncer em Tratamento" data-peso="60"> 🎗️ Câncer em Tratamento</label>
+          <label><input type="checkbox" class="condicao" value="Tuberculose Ativa" data-peso="55"> 🦠 Tuberculose Ativa</label>
+          <label><input type="checkbox" class="condicao" value="Hepatite Crônica" data-peso="30"> 🧪 Hepatite Crônica</label>
+          <label><input type="checkbox" class="condicao" value="Imunossupressão" data-peso="40"> 🛡️ Imunossupressão</label>
+          <label><input type="checkbox" class="condicao" value="DPOC" data-peso="35"> 💨 DPOC</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Telefone *</label>
+        <input type="tel" id="telefone" placeholder="99999999999" required maxlength="11" inputmode="numeric" pattern="[0-9]*" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+      </div>
+      <div class="form-group">
+        <label>CPF *</label>
+        <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+        <small>Obrigatório apenas para brasileiros</small>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="estrangeiro">
+        <label for="estrangeiro">🌍 Sou estrangeiro</label>
+      </div>
+      <div class="form-group">
+        <label>Email (opcional)</label>
+        <input type="email" id="email">
+      </div>
+      <button type="submit" class="btn btn-primary">Iniciar Aferição →</button>
+    </form>
+    <button class="btn btn-secondary" onclick="location.href='index.html'">← Voltar ao Painel</button>
+  </div>
+</div>
+
+<div id="modalPreferencias" class="modal">
+  <div class="modal-content">
+    <h3>⚙️ Preferências</h3>
+    <div id="opcoesPref" class="modal-opcoes"></div>
+    <div class="modal-buttons">
+      <button id="salvarPref" class="btn-save">Salvar</button>
+      <button id="fecharPref" class="btn-close">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =================== SELEÇÃO DE FAIXA ETÁRIA ===================
+  const cards = document.querySelectorAll('.idade-card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      cards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      document.getElementById('faixaEtaria').value = card.dataset.faixa;
+      document.getElementById('especialidade').value = card.dataset.especialidade;
+    });
+  });
+
+  // =================== CPF E ESTRANGEIRO ===================
+  const cpfInput = document.getElementById('cpf');
+  const estrangeiroCheck = document.getElementById('estrangeiro');
+  function toggleCpfRequired() {
+    if (estrangeiroCheck.checked) {
+      cpfInput.removeAttribute('required');
+      cpfInput.placeholder = 'CPF opcional';
+    } else {
+      cpfInput.setAttribute('required', 'required');
+      cpfInput.placeholder = '000.000.000-00';
+    }
+  }
+  estrangeiroCheck.addEventListener('change', toggleCpfRequired);
+  toggleCpfRequired();
+
+  cpfInput.addEventListener('input', function(e) {
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length > 3) val = val.replace(/^(\d{3})(\d)/, '$1.$2');
+    if (val.length > 6) val = val.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+    if (val.length > 9) val = val.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+    e.target.value = val.substring(0, 14);
+  });
+
+  // =================== TRAVA GRAVIDEZ ===================
+  const sexoMasculino = document.querySelector('input[name="sexo"][value="Masculino"]');
+  const sexoFeminino = document.querySelector('input[name="sexo"][value="Feminino"]');
+  const chkGravidez = document.querySelector('.condicao[value="Gravidez"]');
+  const lblGravidez = chkGravidez.parentElement;
+  function toggleGravidez() {
+    if (sexoMasculino.checked) {
+      chkGravidez.disabled = true;
+      chkGravidez.checked = false;
+      lblGravidez.style.opacity = "0.4";
+      lblGravidez.style.background = "#000";
+      lblGravidez.style.cursor = "not-allowed";
+    } else {
+      chkGravidez.disabled = false;
+      lblGravidez.style.opacity = "1";
+      lblGravidez.style.background = "rgba(255,255,255,0.1)";
+      lblGravidez.style.cursor = "pointer";
+    }
+  }
+  sexoMasculino.addEventListener('change', toggleGravidez);
+  sexoFeminino.addEventListener('change', toggleGravidez);
+  toggleGravidez();
+
+  // =================== PREFERÊNCIAS ===================
+  const opcoesPreferencias = [
+    "Trans Feminino", "Trans Masculino", "Lésbica", "Homossexual", 
+    "Não-binário", "Pansexual", "Assexual", "Outro"
+  ];
+  let preferenciasSelecionadas = [];
+
+  function abrirModalPreferencias() {
+    const container = document.getElementById('opcoesPref');
+    container.innerHTML = opcoesPreferencias.map(op => `
+      <label>
+        <input type="checkbox" value="${op}" ${preferenciasSelecionadas.includes(op) ? 'checked' : ''}> ${op}
+      </label>
+    `).join('');
+    document.getElementById('modalPreferencias').style.display = 'flex';
+  }
+
+  document.getElementById('btnPreferencias').addEventListener('click', abrirModalPreferencias);
+  document.getElementById('salvarPref').addEventListener('click', () => {
+    preferenciasSelecionadas = Array.from(document.querySelectorAll('#opcoesPref input:checked')).map(cb => cb.value);
+    document.getElementById('modalPreferencias').style.display = 'none';
+  });
+  document.getElementById('fecharPref').addEventListener('click', () => {
+    document.getElementById('modalPreferencias').style.display = 'none';
+  });
+
+  // =================== SUBMISSÃO ===================
+  document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nome = document.getElementById('nome').value.trim();
+    const faixa = document.getElementById('faixaEtaria').value;
+    const especialidade = document.getElementById('especialidade').value;
+    if (!nome || !faixa) { alert('Preencha nome e selecione a faixa etária.'); return; }
+    const sexoElem = document.querySelector('input[name="sexo"]:checked');
+    if (!sexoElem) { alert('Selecione o sexo.'); return; }
+    const sexo = sexoElem.value;
+    const telefone = document.getElementById('telefone').value;
+    let cpf = document.getElementById('cpf').value;
+    const estrangeiro = estrangeiroCheck.checked;
+    if (!estrangeiro && !cpf) { alert('CPF é obrigatório para brasileiros.'); return; }
+    const condicoes = [];
+    let pesoCondicoes = 0;
+    document.querySelectorAll('.condicao:checked').forEach(cb => {
+      condicoes.push(cb.value);
+      pesoCondicoes += parseInt(cb.dataset.peso);
+    });
+    const paciente = {
+      nome, faixaEtaria: faixa, especialidade, sexo,
+      preferencias: preferenciasSelecionadas,
+      condicoes, pesoCondicoes,
+      telefone, cpf: estrangeiro ? (cpf || 'Estrangeiro') : cpf,
+      email: document.getElementById('email').value,
+      estrangeiro, dataCadastro: new Date().toISOString()
+    };
+    localStorage.setItem('pacienteData', JSON.stringify(paciente));
+    window.location.href = 'afericao.html';
+  });
+</script>
+</body>
+</html>
