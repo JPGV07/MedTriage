@@ -108,7 +108,7 @@
     </table>
   </div>
   
-  <button class="btn" style="background: rgba(255,255,255,0.05); color: #ccc;" onclick="location.href='painel.html'">← Voltar ao Painel</button>
+  <button class="btn" style="background: rgba(255,255,255,0.05); color: #ccc;" onclick="location.href='index.html'">← Voltar ao Painel</button>
 </div>
 
 <script>
@@ -237,7 +237,7 @@
     if (!user || user.tipo !== 'admin') { alert('Acesso apenas para administradores.'); window.location.href = 'painel.html'; }
   }
 
-  function logout() { localStorage.removeItem('user'); window.location.href = 'painel.html'; }
+  function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
 
   function atualizarTabelaFilaAdmin() {
     const fila = JSON.parse(localStorage.getItem('fila')) || [];
