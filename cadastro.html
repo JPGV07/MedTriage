@@ -129,8 +129,16 @@
       cursor: pointer;
       font-weight: normal;
       font-size: 14px;
+      transition: 0.2s;
     }
-    .condicoes-grid input { width: auto; margin: 0; }
+    .condicoes-grid label.disabled {
+      opacity: 0.4;
+      background: #222;
+      cursor: not-allowed;
+    }
+    .condicoes-grid input[disabled] {
+      pointer-events: none;
+    }
     .checkbox-group {
       display: flex;
       align-items: center;
@@ -202,8 +210,8 @@
       <div class="form-group">
         <label>Gênero *</label>
         <div class="genero-opcoes" id="generoOpcoes">
-          <label><input type="radio" name="genero" value="Masculino"> Masculino</label>
-          <label><input type="radio" name="genero" value="Feminino"> Feminino</label>
+          <label><input type="radio" name="genero" value="Masculino cis"> Masculino cis</label>
+          <label><input type="radio" name="genero" value="Feminino cis"> Feminino cis</label>
           <label><input type="radio" name="genero" value="Homens Trans"> Homens Trans</label>
           <label><input type="radio" name="genero" value="Mulher Trans"> Mulher Trans</label>
           <label><input type="radio" name="genero" value="Não Binário"> Não Binário</label>
@@ -265,13 +273,40 @@
 
   // Estilização dos botões de gênero (seleção visual)
   const generoLabels = document.querySelectorAll('#generoOpcoes label');
+  const gravidezLabel = document.querySelector('#condicoesGrid label:first-child');
+  const gravidezCheckbox = document.querySelector('.condicao[value="Gravidez"]');
+
+  function atualizarTravaGravidez() {
+    const generoSelecionado = document.querySelector('input[name="genero"]:checked');
+    if (!generoSelecionado) {
+      // Se nenhum gênero selecionado, deixa habilitado (ou desabilitado? vou deixar habilitado)
+      gravidezCheckbox.disabled = false;
+      gravidezLabel.classList.remove('disabled');
+      return;
+    }
+    const genero = generoSelecionado.value;
+    // Desabilita gravidez para masculino cis e homens trans
+    if (genero === 'Masculino cis' || genero === 'Homens Trans') {
+      gravidezCheckbox.disabled = true;
+      gravidezCheckbox.checked = false;
+      gravidezLabel.classList.add('disabled');
+    } else {
+      gravidezCheckbox.disabled = false;
+      gravidezLabel.classList.remove('disabled');
+    }
+  }
+
   generoLabels.forEach(label => {
     const radio = label.querySelector('input');
     radio.addEventListener('change', () => {
       generoLabels.forEach(l => l.classList.remove('selected'));
       if (radio.checked) label.classList.add('selected');
+      atualizarTravaGravidez();
     });
   });
+
+  // Inicialmente, verifica se algum gênero está marcado (caso haja pré-seleção)
+  atualizarTravaGravidez();
 
   // CPF e estrangeiro
   const cpfInput = document.getElementById('cpf');
