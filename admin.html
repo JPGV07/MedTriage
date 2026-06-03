@@ -6,7 +6,6 @@
   <title>Admin - MedTriage | Regras</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* mesmo estilo anterior, mantido */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
@@ -83,7 +82,7 @@
 <div class="container">
   <div class="header-actions"><button class="btn-sair" onclick="logout()">Sair</button></div>
   <h2>⚙️ Painel do Administrador - João</h2>
-  
+
   <div class="secao">
     <h3>1. Selecione os sintomas para combinar:</h3>
     <div class="sintomas-grid" id="listaSintomasAdmin"></div>
@@ -94,41 +93,35 @@
     </div>
     <button class="btn btn-primary" onclick="salvarNovaRegra()">💾 Gravar Nova Regra Combinada</button>
   </div>
-  
+
   <div class="secao">
     <h3>📋 Regras Ativas no Sistema</h3>
     <table class="tabela-regras"><thead><tr><th>Sintomas Combinados</th><th>Resultado</th><th>Instrução Exibida</th><th>Ação</th></tr></thead><tbody id="corpoTabelaRegras"></tbody></table>
   </div>
-  
+
   <div class="secao">
     <h3>📋 Visualização da Fila Completa (Todas Especialidades) - Admin pode remover</h3>
     <table class="fila-table" id="tabelaFilaAdmin">
-      <thead><tr><th>Nome</th><th>Sexo</th><th>Prioridade</th><th>Especialidade</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th></tr></thead>
+      <thead><tr><th>Nome</th><th>Gênero</th><th>Prioridade</th><th>Especialidade</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th></tr></thead>
       <tbody id="corpoTabelaFilaAdmin"><tr><td colspan="8" style="text-align:center;">Carregando...</td></tr></tbody>
     </table>
   </div>
-  
+
   <button class="btn" style="background: rgba(255,255,255,0.05); color: #ccc;" onclick="location.href='index.html'">← Voltar ao Painel</button>
 </div>
 
 <script>
   // =================== LISTA COMPLETA DE SINTOMAS ===================
-  // Sincronizada com a triagem (inclui todos os sintomas de grave, moderado e leve)
   const todosSintomas = [
-    // Sintomas da aferição
     'febre_alta', 'pressao_alta',
-    // GRAVES
     'parada_cardiaca', 'dificuldade_respirar_grave', 'fratura_exposta', 'convulsao',
     'hemorragia', 'queimadura_3_grau', 'dor_peito_intensa', 'confusao_mental',
     'alucinacoes', 'dificudade_de_locomocao', 'dificudade_da_fala', 'envenenamento',
-    // MODERADOS
     'vomitos_persistentes', 'desidratacao', 'dor_abdominal_intensa', 'desmaio_recente',
     'cefaleia_intratavel', 'palpitacoes', 'tontura_persistente', 'anemia_grave',
     'sangramento_nasal', 'nauseas_intensas', 'diarreia_aguda', 'visao_embacada',
-    // LEVES
     'dor_cabeca', 'tosse_persistente', 'dor_garganta', 'fadiga', 'dor_lombar',
     'insonia', 'ansiedade', 'coriza', 'espirros', 'dor_muscular', 'calafrios', 'mal_estar',
-    // Outros especiais
     'febre_40', 'febre_38', 'dor_cabeca_forte', 'fadiga_extrema', 'ictericia_grave',
     'hemoptise', 'convulsao_focal', 'sangramento_nasal_abundante'
   ];
@@ -199,7 +192,7 @@
   function atualizarTabelaRegras() {
     const regras = obterRegras();
     const tabela = document.getElementById('corpoTabelaRegras');
-    if (regras.length === 0) { tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nenhuma regra customizada ativa.</td></tr>'; return; }
+    if (regras.length === 0) { tabela.innerHTML = '<td><td colspan="4" style="text-align:center;">Nenhuma regra customizada ativa.</td></tr>'; return; }
     tabela.innerHTML = regras.map((regra, index) => `
       <tr>
         <td><strong>${regra.sintomasObrigatorios.map(formatarNome).join(' + ')}</strong></td>
@@ -254,7 +247,7 @@
       return `
         <tr>
           <td>${paciente.nome || '—'}</td>
-          <td>${paciente.sexo || 'Não informado'}</td>
+          <td>${paciente.genero || 'Não informado'}   <!-- ✅ CORRIGIDO: era paciente.sexo -->
           <td><span class="badge ${paciente.risco}">${paciente.risco.toUpperCase()}</span></td>
           <td>${paciente.especialidade || '—'}</td>
           <td class="coluna-texto">${condicoesLista}</td>
