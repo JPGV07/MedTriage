@@ -212,8 +212,8 @@
       <div class="form-group">
         <label>Gênero *</label>
         <div class="genero-opcoes" id="generoOpcoes">
-          <label><input type="radio" name="genero" value="Masculino cis"> Masculino</label>
-          <label><input type="radio" name="genero" value="Feminino cis"> Feminino</label>
+          <label><input type="radio" name="genero" value="Masculino"> Masculino</label>
+          <label><input type="radio" name="genero" value="Feminino"> Feminino</label>
           <label><input type="radio" name="genero" value="Homens Trans"> Homens Trans</label>
           <label><input type="radio" name="genero" value="Mulher Trans"> Mulher Trans</label>
           <label><input type="radio" name="genero" value="Não Binário"> Não Binário</label>
@@ -296,8 +296,8 @@
         }
         return;
       }
-      // Desabilita para masculino cis e homens trans
-      if (generoSelecionado === 'Masculino cis' || generoSelecionado === 'Mulher Trans') {
+      // Desabilita para masculino cis e mulher trans
+      if (generoSelecionado === 'Masculino' || generoSelecionado === 'Mulher Trans') {
         gravidezCheckbox.disabled = true;
         gravidezCheckbox.checked = false;
         gravidezLabel.classList.add('disabled');
