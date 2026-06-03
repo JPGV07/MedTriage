@@ -90,34 +90,29 @@
     .idade-emoji { font-size: 2rem; }
     .idade-titulo { font-weight: 700; margin: 8px 0 4px; }
     .idade-desc { font-size: 12px; opacity: 0.8; }
-    .sexo-opcoes {
+    .genero-opcoes {
       display: flex;
-      gap: 20px;
-      margin-top: 8px;
-      align-items: center;
       flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
     }
-    .sexo-opcoes label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .genero-opcoes label {
       background: rgba(255,255,255,0.1);
       padding: 10px 18px;
       border-radius: 40px;
       cursor: pointer;
-    }
-    .sexo-opcoes input { width: auto; margin: 0; }
-    .btn-pref {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 40px;
-      padding: 10px 18px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
+      font-weight: normal;
+      color: #ddd;
       transition: 0.2s;
     }
-    .btn-pref:hover { background: rgba(0,183,255,0.4); transform: scale(1.02); }
+    .genero-opcoes input {
+      display: none;
+    }
+    .genero-opcoes label.selected {
+      background: linear-gradient(135deg,#008cff,#00b7ff);
+      color: white;
+      box-shadow: 0 0 10px rgba(0,140,255,0.5);
+    }
     .condicoes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -168,103 +163,6 @@
     }
     .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
     small { color: #aaa; font-size: 12px; }
-    /* Modal melhorado */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: linear-gradient(145deg, #0f1a24, #0a1118);
-      border-radius: 32px;
-      max-width: 450px;
-      width: 90%;
-      padding: 28px;
-      border: 1px solid rgba(0,183,255,0.5);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,180,255,0.3);
-      animation: fadeInUp 0.3s ease;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .modal-content h3 {
-      color: #00b7ff;
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .modal-opcoes {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin: 20px 0;
-      max-height: 350px;
-      overflow-y: auto;
-      padding-right: 8px;
-    }
-    .modal-opcoes label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255,255,255,0.08);
-      padding: 12px 16px;
-      border-radius: 60px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      color: #e0e0e0;
-      transition: 0.2s;
-      border: 1px solid transparent;
-    }
-    .modal-opcoes label:hover {
-      background: rgba(0,183,255,0.2);
-      border-color: #00b7ff;
-      transform: translateX(5px);
-    }
-    .modal-opcoes input {
-      width: 18px;
-      height: 18px;
-      accent-color: #00b7ff;
-    }
-    .modal-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .modal-buttons button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .btn-save {
-      background: linear-gradient(135deg,#008cff,#00b7ff);
-      color: white;
-    }
-    .btn-close {
-      background: rgba(255,255,255,0.1);
-      color: #ccc;
-    }
-    .btn-close:hover { background: rgba(255,255,255,0.2); }
-    @media (max-width: 600px) {
-      .form-container { padding: 1.5rem; }
-      .idade-card { min-width: 100px; }
-      .condicoes-grid { grid-template-columns: 1fr 1fr; }
-    }
   </style>
 </head>
 <body>
@@ -303,10 +201,12 @@
       </div>
       <div class="form-group">
         <label>Gênero *</label>
-        <div class="sexo-opcoes">
-          <label><input type="radio" name="sexo" value="Masculino" required> Masculino</label>
-          <label><input type="radio" name="sexo" value="Feminino"> Feminino</label>
-          <button type="button" id="btnPreferencias" class="btn-pref">⚙️ Preferências</button>
+        <div class="genero-opcoes" id="generoOpcoes">
+          <label><input type="radio" name="genero" value="Masculino cis"> Masculino cis</label>
+          <label><input type="radio" name="genero" value="Feminino cis"> Feminino cis</label>
+          <label><input type="radio" name="genero" value="Homens Trans"> Homens Trans</label>
+          <label><input type="radio" name="genero" value="Mulher Trans"> Mulher Trans</label>
+          <label><input type="radio" name="genero" value="Não Binário"> Não Binário</label>
         </div>
       </div>
       <div class="form-group">
@@ -330,7 +230,7 @@
       </div>
       <div class="form-group">
         <label>Telefone *</label>
-        <input type="tel" id="telefone" placeholder="99999999999" required maxlength="11" inputmode="numeric" pattern="[0-9]*" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        <input type="tel" id="telefone" placeholder="11999999999" required maxlength="11" inputmode="numeric" pattern="[0-9]*" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
       </div>
       <div class="form-group">
         <label>CPF *</label>
@@ -351,19 +251,8 @@
   </div>
 </div>
 
-<div id="modalPreferencias" class="modal">
-  <div class="modal-content">
-    <h3>⚙️ Preferências</h3>
-    <div id="opcoesPref" class="modal-opcoes"></div>
-    <div class="modal-buttons">
-      <button id="salvarPref" class="btn-save">Salvar</button>
-      <button id="fecharPref" class="btn-close">Fechar</button>
-    </div>
-  </div>
-</div>
-
 <script>
-  // =================== SELEÇÃO DE FAIXA ETÁRIA ===================
+  // Seleção de faixa etária
   const cards = document.querySelectorAll('.idade-card');
   cards.forEach(card => {
     card.addEventListener('click', () => {
@@ -374,7 +263,17 @@
     });
   });
 
-  // =================== CPF E ESTRANGEIRO ===================
+  // Estilização dos botões de gênero (seleção visual)
+  const generoLabels = document.querySelectorAll('#generoOpcoes label');
+  generoLabels.forEach(label => {
+    const radio = label.querySelector('input');
+    radio.addEventListener('change', () => {
+      generoLabels.forEach(l => l.classList.remove('selected'));
+      if (radio.checked) label.classList.add('selected');
+    });
+  });
+
+  // CPF e estrangeiro
   const cpfInput = document.getElementById('cpf');
   const estrangeiroCheck = document.getElementById('estrangeiro');
   function toggleCpfRequired() {
@@ -397,65 +296,16 @@
     e.target.value = val.substring(0, 14);
   });
 
-  // =================== TRAVA GRAVIDEZ ===================
-  const sexoMasculino = document.querySelector('input[name="sexo"][value="Masculino"]');
-  const sexoFeminino = document.querySelector('input[name="sexo"][value="Feminino"]');
-  const chkGravidez = document.querySelector('.condicao[value="Gravidez"]');
-  const lblGravidez = chkGravidez.parentElement;
-  function toggleGravidez() {
-    if (sexoMasculino.checked) {
-      chkGravidez.disabled = true;
-      chkGravidez.checked = false;
-      lblGravidez.style.opacity = "0.4";
-      lblGravidez.style.background = "#000";
-      lblGravidez.style.cursor = "not-allowed";
-    } else {
-      chkGravidez.disabled = false;
-      lblGravidez.style.opacity = "1";
-      lblGravidez.style.background = "rgba(255,255,255,0.1)";
-      lblGravidez.style.cursor = "pointer";
-    }
-  }
-  sexoMasculino.addEventListener('change', toggleGravidez);
-  sexoFeminino.addEventListener('change', toggleGravidez);
-  toggleGravidez();
-
-  // =================== PREFERÊNCIAS ===================
-  const opcoesPreferencias = [
-    "Trans Feminino", "Trans Masculino", "Lésbica", "Homossexual", 
-    "Não-binário", "Pansexual", "Assexual", "Outro"
-  ];
-  let preferenciasSelecionadas = [];
-
-  function abrirModalPreferencias() {
-    const container = document.getElementById('opcoesPref');
-    container.innerHTML = opcoesPreferencias.map(op => `
-      <label>
-        <input type="checkbox" value="${op}" ${preferenciasSelecionadas.includes(op) ? 'checked' : ''}> ${op}
-      </label>
-    `).join('');
-    document.getElementById('modalPreferencias').style.display = 'flex';
-  }
-
-  document.getElementById('btnPreferencias').addEventListener('click', abrirModalPreferencias);
-  document.getElementById('salvarPref').addEventListener('click', () => {
-    preferenciasSelecionadas = Array.from(document.querySelectorAll('#opcoesPref input:checked')).map(cb => cb.value);
-    document.getElementById('modalPreferencias').style.display = 'none';
-  });
-  document.getElementById('fecharPref').addEventListener('click', () => {
-    document.getElementById('modalPreferencias').style.display = 'none';
-  });
-
-  // =================== SUBMISSÃO ===================
+  // Submissão
   document.getElementById('cadastroForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const nome = document.getElementById('nome').value.trim();
     const faixa = document.getElementById('faixaEtaria').value;
     const especialidade = document.getElementById('especialidade').value;
     if (!nome || !faixa) { alert('Preencha nome e selecione a faixa etária.'); return; }
-    const sexoElem = document.querySelector('input[name="sexo"]:checked');
-    if (!sexoElem) { alert('Selecione o sexo.'); return; }
-    const sexo = sexoElem.value;
+    const generoSelecionado = document.querySelector('input[name="genero"]:checked');
+    if (!generoSelecionado) { alert('Selecione o gênero.'); return; }
+    const genero = generoSelecionado.value;
     const telefone = document.getElementById('telefone').value;
     let cpf = document.getElementById('cpf').value;
     const estrangeiro = estrangeiroCheck.checked;
@@ -467,8 +317,7 @@
       pesoCondicoes += parseInt(cb.dataset.peso);
     });
     const paciente = {
-      nome, faixaEtaria: faixa, especialidade, sexo,
-      preferencias: preferenciasSelecionadas,
+      nome, faixaEtaria: faixa, especialidade, genero,
       condicoes, pesoCondicoes,
       telefone, cpf: estrangeiro ? (cpf || 'Estrangeiro') : cpf,
       email: document.getElementById('email').value,
