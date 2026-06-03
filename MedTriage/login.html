@@ -16,7 +16,6 @@
       align-items: center;
       padding: 20px;
     }
-    /* Card de login com efeito glassmorphism */
     .login-card {
       max-width: 400px;
       width: 100%;
@@ -66,68 +65,61 @@
 </head>
 <body>
 <div class="login-card">
-  <div class="login-header"><h2>🔐 Acesso</h2><p style="color:#aaa;">Médico (Clínico, Pediatra, Geriatra) ou Administrador</p></div>
-  <div class="input-group"><label>👤 Usuário</label><input type="text" id="username" placeholder="medico / pediatra / geriatra / admin" autocomplete="off"></div>
+  <div class="login-header"><h2> Acesso</h2><p style="color:#aaa;">Médico (Igor, Eduarda, Wilson) ou Administrador (João)</p></div>
+  <div class="input-group"><label>👤 Usuário</label><input type="text" id="username" placeholder="Ex: Igor, Eduarda, Wilson, João ou medico/pediatra/geriatra/admin" autocomplete="off"></div>
   <div class="input-group"><label>🔒 Senha</label><input type="password" id="password" placeholder="••••••"></div>
   <button class="btn-login" onclick="fazerLogin()">Entrar →</button>
   <a href="painel.html" class="back-link">← Voltar ao Painel</a>
   <div id="errorMsg" class="error-msg"></div>
 </div>
 <script>
-  // =================== FUNÇÃO PRINCIPAL DE LOGIN ===================
   function fazerLogin() {
-    const user = document.getElementById('username').value.trim();
+    let user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     const errorDiv = document.getElementById('errorMsg');
     errorDiv.style.display = 'none';
     
-    // Validação básica
     if (!user || !pass) { 
       errorDiv.innerText = 'Preencha usuário e senha'; 
       errorDiv.style.display = 'block'; 
       return; 
     }
     
-    // ========== LOGIN ADMIN ==========
-    if (user === 'admin' && pass === 'admin') {
-      localStorage.setItem('user', JSON.stringify({ tipo: 'admin', nome: 'Administrador' }));
+    // Mapeamento de nomes pessoais para usuários internos
+    let usuarioInterno = user.toLowerCase();
+    if (usuarioInterno === 'joão' || usuarioInterno === 'joao') usuarioInterno = 'admin';
+    else if (usuarioInterno === 'igor') usuarioInterno = 'medico';
+    else if (usuarioInterno === 'eduarda') usuarioInterno = 'pediatra';
+    else if (usuarioInterno === 'wilson') usuarioInterno = 'geriatra';
+    
+    // ADMIN
+    if (usuarioInterno === 'admin' && pass === 'admin') {
+      localStorage.setItem('user', JSON.stringify({ tipo: 'admin', nome: 'João', especialidade: 'Administrador' }));
       window.location.href = 'admin.html';
       return;
     }
     
-    // ========== LOGIN MÉDICO (senha padrão 123) ==========
+    // Médicos (senha padrão 123)
     if (pass !== '123') { 
       errorDiv.innerText = 'Senha incorreta. Use 123 para médicos.'; 
       errorDiv.style.display = 'block'; 
       return; 
     }
     
-    // Identifica a especialidade com base no nome de usuário
     let especialidade = '', nomeMedico = '';
-    if (user === 'medico') { 
-      especialidade = 'Clínica Geral'; 
-      nomeMedico = 'Dr. Clínico Geral'; 
-    }
-    else if (user === 'pediatra') { 
-      especialidade = 'Pediatria'; 
-      nomeMedico = 'Dra. Pediatra'; 
-    }
-    else if (user === 'geriatra') { 
-      especialidade = 'Geriatria'; 
-      nomeMedico = 'Dr. Geriatra'; 
-    }
+    if (usuarioInterno === 'medico') { especialidade = 'Clínica Geral'; nomeMedico = 'Igor'; }
+    else if (usuarioInterno === 'pediatra') { especialidade = 'Pediatria'; nomeMedico = 'Eduarda'; }
+    else if (usuarioInterno === 'geriatra') { especialidade = 'Geriatria'; nomeMedico = 'Wilson'; }
     else { 
-      errorDiv.innerText = 'Usuário inválido. Use medico, pediatra, geriatra ou admin.'; 
+      errorDiv.innerText = 'Usuário inválido. Use: Igor, Eduarda, Wilson, João ou medico/pediatra/geriatra/admin'; 
       errorDiv.style.display = 'block'; 
       return; 
     }
     
-    // Salva os dados do médico no localStorage e redireciona
-    localStorage.setItem('user', JSON.stringify({ tipo: 'medico', especialidade: especialidade, nome: nomeMedico }));
+    localStorage.setItem('user', JSON.stringify({ tipo: 'medico', especialidade, nome: nomeMedico }));
     window.location.href = 'medico.html';
   }
   
-  // Permite pressionar Enter para submeter o login
   document.getElementById('password').addEventListener('keypress', (e) => { 
     if (e.key === 'Enter') fazerLogin(); 
   });
