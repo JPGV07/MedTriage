@@ -133,11 +133,13 @@
     }
     .condicoes-grid label.disabled {
       opacity: 0.4;
-      background: #222;
+      background: #2c2c2c;
       cursor: not-allowed;
-    }
-    .condicoes-grid input[disabled] {
       pointer-events: none;
+    }
+    .condicoes-grid input[type="checkbox"] {
+      width: auto;
+      margin: 0;
     }
     .checkbox-group {
       display: flex;
@@ -260,106 +262,120 @@
 </div>
 
 <script>
-  // Seleção de faixa etária
-  const cards = document.querySelectorAll('.idade-card');
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      cards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      document.getElementById('faixaEtaria').value = card.dataset.faixa;
-      document.getElementById('especialidade').value = card.dataset.especialidade;
+  // Aguarda o DOM carregar completamente
+  document.addEventListener('DOMContentLoaded', function() {
+    // Seleção de faixa etária
+    const cards = document.querySelectorAll('.idade-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('faixaEtaria').value = card.dataset.faixa;
+        document.getElementById('especialidade').value = card.dataset.especialidade;
+      });
     });
-  });
 
-  // Estilização dos botões de gênero (seleção visual)
-  const generoLabels = document.querySelectorAll('#generoOpcoes label');
-  const gravidezLabel = document.querySelector('#condicoesGrid label:first-child');
-  const gravidezCheckbox = document.querySelector('.condicao[value="Gravidez"]');
+    // Elementos da trava de gravidez
+    const generoRadios = document.querySelectorAll('input[name="genero"]');
+    const gravidezCheckbox = document.querySelector('.condicao[value="Gravidez"]');
+    const gravidezLabel = gravidezCheckbox.closest('label'); // pega o label pai
 
-  function atualizarTravaGravidez() {
-    const generoSelecionado = document.querySelector('input[name="genero"]:checked');
-    if (!generoSelecionado) {
-      // Se nenhum gênero selecionado, deixa habilitado (ou desabilitado? vou deixar habilitado)
-      gravidezCheckbox.disabled = false;
-      gravidezLabel.classList.remove('disabled');
-      return;
+    function atualizarTravaGravidez() {
+      let generoSelecionado = null;
+      for (let radio of generoRadios) {
+        if (radio.checked) {
+          generoSelecionado = radio.value;
+          break;
+        }
+      }
+      if (!generoSelecionado) {
+        // Nenhum gênero selecionado: deixa habilitado (comportamento padrão)
+        if (gravidezCheckbox) {
+          gravidezCheckbox.disabled = false;
+          gravidezLabel.classList.remove('disabled');
+        }
+        return;
+      }
+      // Desabilita para masculino cis e homens trans
+      if (generoSelecionado === 'Masculino cis' || generoSelecionado === 'Homens Trans') {
+        gravidezCheckbox.disabled = true;
+        gravidezCheckbox.checked = false;
+        gravidezLabel.classList.add('disabled');
+      } else {
+        gravidezCheckbox.disabled = false;
+        gravidezLabel.classList.remove('disabled');
+      }
     }
-    const genero = generoSelecionado.value;
-    // Desabilita gravidez para masculino cis e homens trans
-    if (genero === 'Masculino cis' || genero === 'Homens Trans') {
-      gravidezCheckbox.disabled = true;
-      gravidezCheckbox.checked = false;
-      gravidezLabel.classList.add('disabled');
-    } else {
-      gravidezCheckbox.disabled = false;
-      gravidezLabel.classList.remove('disabled');
-    }
-  }
 
-  generoLabels.forEach(label => {
-    const radio = label.querySelector('input');
-    radio.addEventListener('change', () => {
-      generoLabels.forEach(l => l.classList.remove('selected'));
-      if (radio.checked) label.classList.add('selected');
-      atualizarTravaGravidez();
+    // Adiciona evento de change para cada rádio de gênero
+    generoRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Atualiza a aparência dos labels de gênero
+        const allLabels = document.querySelectorAll('#generoOpcoes label');
+        allLabels.forEach(label => label.classList.remove('selected'));
+        if (this.checked) {
+          this.parentElement.classList.add('selected');
+        }
+        atualizarTravaGravidez();
+      });
     });
-  });
 
-  // Inicialmente, verifica se algum gênero está marcado (caso haja pré-seleção)
-  atualizarTravaGravidez();
+    // Executa a trava ao carregar (caso algum rádio já esteja marcado)
+    atualizarTravaGravidez();
 
-  // CPF e estrangeiro
-  const cpfInput = document.getElementById('cpf');
-  const estrangeiroCheck = document.getElementById('estrangeiro');
-  function toggleCpfRequired() {
-    if (estrangeiroCheck.checked) {
-      cpfInput.removeAttribute('required');
-      cpfInput.placeholder = 'CPF opcional';
-    } else {
-      cpfInput.setAttribute('required', 'required');
-      cpfInput.placeholder = '000.000.000-00';
+    // CPF e estrangeiro
+    const cpfInput = document.getElementById('cpf');
+    const estrangeiroCheck = document.getElementById('estrangeiro');
+    function toggleCpfRequired() {
+      if (estrangeiroCheck.checked) {
+        cpfInput.removeAttribute('required');
+        cpfInput.placeholder = 'CPF opcional';
+      } else {
+        cpfInput.setAttribute('required', 'required');
+        cpfInput.placeholder = '000.000.000-00';
+      }
     }
-  }
-  estrangeiroCheck.addEventListener('change', toggleCpfRequired);
-  toggleCpfRequired();
+    estrangeiroCheck.addEventListener('change', toggleCpfRequired);
+    toggleCpfRequired();
 
-  cpfInput.addEventListener('input', function(e) {
-    let val = e.target.value.replace(/\D/g, '');
-    if (val.length > 3) val = val.replace(/^(\d{3})(\d)/, '$1.$2');
-    if (val.length > 6) val = val.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-    if (val.length > 9) val = val.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-    e.target.value = val.substring(0, 14);
-  });
-
-  // Submissão
-  document.getElementById('cadastroForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const nome = document.getElementById('nome').value.trim();
-    const faixa = document.getElementById('faixaEtaria').value;
-    const especialidade = document.getElementById('especialidade').value;
-    if (!nome || !faixa) { alert('Preencha nome e selecione a faixa etária.'); return; }
-    const generoSelecionado = document.querySelector('input[name="genero"]:checked');
-    if (!generoSelecionado) { alert('Selecione o gênero.'); return; }
-    const genero = generoSelecionado.value;
-    const telefone = document.getElementById('telefone').value;
-    let cpf = document.getElementById('cpf').value;
-    const estrangeiro = estrangeiroCheck.checked;
-    if (!estrangeiro && !cpf) { alert('CPF é obrigatório para brasileiros.'); return; }
-    const condicoes = [];
-    let pesoCondicoes = 0;
-    document.querySelectorAll('.condicao:checked').forEach(cb => {
-      condicoes.push(cb.value);
-      pesoCondicoes += parseInt(cb.dataset.peso);
+    cpfInput.addEventListener('input', function(e) {
+      let val = e.target.value.replace(/\D/g, '');
+      if (val.length > 3) val = val.replace(/^(\d{3})(\d)/, '$1.$2');
+      if (val.length > 6) val = val.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+      if (val.length > 9) val = val.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+      e.target.value = val.substring(0, 14);
     });
-    const paciente = {
-      nome, faixaEtaria: faixa, especialidade, genero,
-      condicoes, pesoCondicoes,
-      telefone, cpf: estrangeiro ? (cpf || 'Estrangeiro') : cpf,
-      email: document.getElementById('email').value,
-      estrangeiro, dataCadastro: new Date().toISOString()
-    };
-    localStorage.setItem('pacienteData', JSON.stringify(paciente));
-    window.location.href = 'afericao.html';
+
+    // Submissão do formulário
+    document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value.trim();
+      const faixa = document.getElementById('faixaEtaria').value;
+      const especialidade = document.getElementById('especialidade').value;
+      if (!nome || !faixa) { alert('Preencha nome e selecione a faixa etária.'); return; }
+      const generoSelecionado = document.querySelector('input[name="genero"]:checked');
+      if (!generoSelecionado) { alert('Selecione o gênero.'); return; }
+      const genero = generoSelecionado.value;
+      const telefone = document.getElementById('telefone').value;
+      let cpf = document.getElementById('cpf').value;
+      const estrangeiro = estrangeiroCheck.checked;
+      if (!estrangeiro && !cpf) { alert('CPF é obrigatório para brasileiros.'); return; }
+      const condicoes = [];
+      let pesoCondicoes = 0;
+      document.querySelectorAll('.condicao:checked').forEach(cb => {
+        condicoes.push(cb.value);
+        pesoCondicoes += parseInt(cb.dataset.peso);
+      });
+      const paciente = {
+        nome, faixaEtaria: faixa, especialidade, genero,
+        condicoes, pesoCondicoes,
+        telefone, cpf: estrangeiro ? (cpf || 'Estrangeiro') : cpf,
+        email: document.getElementById('email').value,
+        estrangeiro, dataCadastro: new Date().toISOString()
+      };
+      localStorage.setItem('pacienteData', JSON.stringify(paciente));
+      window.location.href = 'afericao.html';
+    });
   });
 </script>
 </body>
