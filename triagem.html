@@ -6,7 +6,6 @@
   <title>MedTriage - Triagem Inteligente</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* Estilos base (mesmo do anterior, com aviso ampliado) */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family:'Inter',sans-serif;
@@ -194,7 +193,7 @@
 <body>
 <div class="container">
   <div class="header">
-    <h2>🩺 Triagem Inteligente </h2>
+    <h2>🩺 Triagem Inteligente</h2>
     <p>Primeiro aplica regras booleanas do administrador; se nenhuma, usa pontuação por pesos.</p>
   </div>
   <div class="paciente-info">
@@ -232,8 +231,8 @@
         { id: 'dor_peito_intensa', nome: 'Dor no Peito Intensa', peso: 140 },
         { id: 'confusao_mental', nome: 'Confusão Mental', peso: 130 },
         { id: 'alucinacoes', nome: 'Alucinações', peso: 120 },
-        { id: 'dificudede_de_locomocao', nome: 'Dificudade de Locomação', peso: 140 },
-        { id: 'dificudade_da_fala', nome: 'Dificudade da Fala', peso: 120 },
+        { id: 'dificudede_de_locomocao', nome: 'Dificuldade de Locomoção', peso: 140 },
+        { id: 'dificudade_da_fala', nome: 'Dificuldade da Fala', peso: 120 },
         { id: 'envenenamento', nome: 'Envenenamento', peso: 120 }
       ]
     },
@@ -300,8 +299,7 @@
       <div class="info-item"><div class="info-label">Telefone</div><div class="info-value">${paciente.telefone}</div></div>
       <div class="info-item"><div class="info-label">CPF</div><div class="info-value">${paciente.cpf}</div></div>
       <div class="info-item"><div class="info-label">Especialidade</div><div class="info-value">${paciente.especialidade}</div></div>
-      <div class="info-item"><div class="info-label">Sexo</div><div class="info-value">${paciente.sexo}</div></div>
-      <div class="info-item"><div class="info-label">Preferências</div><div class="info-value">${paciente.preferencias ? paciente.preferencias.join(', ') : 'Nenhuma'}</div></div>
+      <div class="info-item"><div class="info-label">Gênero</div><div class="info-value">${paciente.genero}</div></div>
       <div class="info-item"><div class="info-label">Condições</div><div class="info-value">${condicoesTexto}</div></div>
     `;
   }
@@ -388,22 +386,22 @@
   function finalizarTriagem() {
     const checkboxes = document.querySelectorAll('.sintoma-check:checked');
     if (checkboxes.length === 0) { alert('Selecione pelo menos um sintoma.'); return; }
-    
+
     const sintomasManuais = Array.from(checkboxes).map(item => item.parentElement.innerText.trim());
     const paciente = JSON.parse(localStorage.getItem('pacienteData'));
     const condicoesNomes = paciente.condicoes || [];
     const sintomasAfericaoNomes = [];
     if (sintomasAfericaoIds.includes('pressao_alta')) sintomasAfericaoNomes.push('Pressão arterial elevada');
     if (sintomasAfericaoIds.includes('febre_alta')) sintomasAfericaoNomes.push('Febre alta');
-    
+
     const badge = document.getElementById('prioridadeBadge');
     let risco = 'verde';
     if (badge.innerText.includes('GRAVE')) risco = 'vermelho';
     else if (badge.innerText.includes('MODERADO')) risco = 'amarelo';
-    
+
     let pontuacaoTotal = pontuacaoExtra;
     checkboxes.forEach(box => pontuacaoTotal += parseInt(box.getAttribute('data-peso')));
-    
+
     const sintomasIds = obterIdsSintomasPaciente();
     const regras = JSON.parse(localStorage.getItem('regrasMedTriage') || '[]');
     const regrasAtendidas = [];
@@ -411,7 +409,7 @@
     for (const regra of regras) {
       if (regra.sintomasObrigatorios.every(s => sintomasSet.has(s))) regrasAtendidas.push(regra.alertaTexto);
     }
-    
+
     const pacienteFila = {
       nome: paciente.nome,
       cpf: paciente.cpf,
@@ -423,16 +421,15 @@
       pontuacao: pontuacaoTotal,
       dataAtendimento: new Date().toISOString(),
       afericao: JSON.parse(localStorage.getItem('afericaoData')),
-      sexo: paciente.sexo,
-      preferencias: paciente.preferencias || [],
+      genero: paciente.genero,
       regrasAdminAtendidas: regrasAtendidas
     };
-    
+
     let fila = JSON.parse(localStorage.getItem('fila')) || [];
     fila = fila.filter(p => p.cpf !== paciente.cpf);
     fila.push(pacienteFila);
     localStorage.setItem('fila', JSON.stringify(fila));
-    
+
     alert(`✅ Paciente cadastrado na fila com sucesso!\n\n📌 Classificação: ${badge.innerText}\n👨‍⚕️ Especialidade: ${paciente.especialidade}\n🩺 Sintomas registrados: ${sintomasManuais.length}`);
     window.location.href = 'index.html';
   }
