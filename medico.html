@@ -84,7 +84,7 @@
 
   function verificarAcesso() {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.tipo !== 'medico') { alert('Acesso apenas para médicos.'); window.location.href = 'painel.html'; }
+    if (!user || user.tipo !== 'medico') { alert('Acesso apenas para médicos.'); window.location.href = 'index.html'; }
     especialidadeAtual = user.especialidade;
     consultorioAtual = getConsultorioPorEspecialidade(especialidadeAtual);
     nomeMedicoAtual = user.nome;
@@ -162,7 +162,7 @@
     } else { alert('Paciente não encontrado na fila.'); }
   }
 
-  function logout() { localStorage.removeItem('user'); window.location.href = 'painel.html'; }
+  function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
 
   verificarAcesso();
   carregarFila();
