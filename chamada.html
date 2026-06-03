@@ -16,7 +16,6 @@
       justify-content: center;
       padding: 20px;
     }
-    /* Painel central de chamada */
     .painel {
       max-width: 800px;
       width: 100%;
@@ -35,12 +34,10 @@
     .consultorio-info { margin-top: 30px; font-size: 2rem; font-weight: 700; background: rgba(0,0,0,0.5); display: inline-block; padding: 15px 30px; border-radius: 60px; color: #ffd966; }
     .mensagem-aviso { margin-top: 40px; font-size: 1.4rem; font-weight: 500; color: #ccc; }
     .aguardando { color: #aaa; font-size: 1.8rem; font-weight: 500; }
-    /* Cores dos badges de prioridade */
     .vermelho-bg { background: #ef4444; color: white; }
     .amarelo-bg { background: #eab308; color: black; }
     .verde-bg { background: #22c55e; color: white; }
     footer { margin-top: 40px; font-size: 0.9rem; color: #8aa0ae; }
-    /* Animação de piscar quando um paciente é chamado */
     @keyframes pisca { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); } }
     .chamado { animation: pisca 1s infinite; }
   </style>
@@ -53,14 +50,11 @@
 </div>
 
 <script>
-  // =================== ATUALIZA A TELA COM O PACIENTE CHAMADO ===================
   function atualizarDisplay() {
-    // Recupera os dados do paciente que foi chamado (salvo pelo médico)
     const chamado = JSON.parse(localStorage.getItem('pacienteChamado'));
     const conteudoDiv = document.getElementById('conteudo');
     
     if (chamado && chamado.nome) {
-      // Define a classe e mensagem de acordo com o risco
       let corClasse = '', mensagemCor = '';
       if (chamado.risco === 'vermelho') { 
         corClasse = 'vermelho-bg'; 
@@ -77,7 +71,6 @@
       
       const consultorioTexto = chamado.consultorio || 'Consultório Médico';
       
-      // Monta o HTML com as informações do paciente chamado
       conteudoDiv.innerHTML = `
         <div class="paciente-nome">${chamado.nome}</div>
         <div class="prioridade-badge ${corClasse}">${chamado.risco.toUpperCase()}</div>
@@ -85,26 +78,34 @@
         <div class="mensagem-aviso">${mensagemCor}<br>Dirija-se ao ${consultorioTexto}.</div>
       `;
       
-      // Adiciona animação de piscar
       document.getElementById('painel').classList.add('chamado');
-      // Remove a animação após 3 segundos
       setTimeout(() => document.getElementById('painel').classList.remove('chamado'), 3000);
+      
+      // Opcional: remove automaticamente após 10 segundos para não ficar eterno
+      setTimeout(() => {
+        if (localStorage.getItem('pacienteChamado')) {
+          localStorage.removeItem('pacienteChamado');
+          atualizarDisplay(); // volta para "aguardando"
+        }
+      }, 10000);
+      
     } else {
-      // Nenhum paciente chamado no momento
       conteudoDiv.innerHTML = '<div class="aguardando">Aguardando chamada...</div>';
       document.getElementById('painel').classList.remove('chamado');
     }
   }
   
-  // =================== ESCUTA MUDANÇAS NO localStorage (disparadas pelo médico) ===================
+  // Escuta mudanças no localStorage (disparado automaticamente quando outra aba altera)
   window.addEventListener('storage', (event) => { 
-    if (event.key === 'pacienteChamado') atualizarDisplay(); 
+    if (event.key === 'pacienteChamado') {
+      console.log('🔔 Nova chamada detectada:', event.newValue);
+      atualizarDisplay(); 
+    }
   });
   
-  // =================== ATUALIZA A CADA 2 SEGUNDOS (fallback) ===================
+  // Fallback: atualiza a cada 2 segundos
   setInterval(atualizarDisplay, 2000);
   
-  // =================== EXECUÇÃO INICIAL ===================
   atualizarDisplay();
 </script>
 </body>
