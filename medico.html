@@ -111,13 +111,12 @@
     fila = ordenarFilaRegra(fila);
     const container = document.getElementById('filaContent');
     if (fila.length === 0) { container.innerHTML = '<div class="vazio">📭 Nenhum paciente na fila para sua especialidade.</div>'; return; }
-    let html = `<table><thead>`;
-    html += `<th>Prioridade</th><th>Paciente</th><th>Sexo</th><th>Preferências</th><th>Especialidade</th><th>Data</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th>`;
-    html += `</thead><tbody>`;
+    let html = `<table><thead><tr>`;
+    html += `<th>Prioridade</th><th>Paciente</th><th>Gênero</th><th>Especialidade</th><th>Data</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th>`;
+    html += `</tr></thead><tbody>`;
     fila.forEach(paciente => {
       const condicoesLista = (paciente.condicoes && paciente.condicoes.length) ? paciente.condicoes.join(', ') : 'Nenhuma';
       const sintomasLista = (paciente.sintomas && paciente.sintomas.length) ? paciente.sintomas.join(', ') : 'Nenhum';
-      const preferenciasLista = (paciente.preferencias && paciente.preferencias.length) ? paciente.preferencias.join(', ') : 'Nenhuma';
       let regraTexto = '—';
       if (paciente.regrasAdminAtendidas && paciente.regrasAdminAtendidas.length) {
         regraTexto = paciente.regrasAdminAtendidas.join('; ');
@@ -126,8 +125,7 @@
       html += `<tr>
         <td><span class="badge-risco ${paciente.risco}">${paciente.risco.toUpperCase()}</span></td>
         <td><strong>${paciente.nome}</strong></td>
-        <td>${paciente.sexo || 'Não informado'}</td>
-        <td class="coluna-texto">${preferenciasLista}</td>
+        <td>${paciente.genero || 'Não informado'}</td>
         <td>${paciente.especialidade || '—'}</td>
         <td>${new Date(paciente.dataAtendimento).toLocaleDateString('pt-BR')}</td>
         <td class="coluna-texto">${condicoesLista}</td>
