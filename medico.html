@@ -111,9 +111,9 @@
     fila = ordenarFilaRegra(fila);
     const container = document.getElementById('filaContent');
     if (fila.length === 0) { container.innerHTML = '<div class="vazio">📭 Nenhum paciente na fila para sua especialidade.</div>'; return; }
-    let html = `<table><thead><tr>`;
+    let html = `<table><thead>`;
     html += `<th>Prioridade</th><th>Paciente</th><th>Gênero</th><th>Especialidade</th><th>Data</th><th>Condições</th><th>Sintomas</th><th>Regra Admin</th><th>Ação</th>`;
-    html += `</tr></thead><tbody>`;
+    html += `</thead><tbody>`;
     fila.forEach(paciente => {
       const condicoesLista = (paciente.condicoes && paciente.condicoes.length) ? paciente.condicoes.join(', ') : 'Nenhuma';
       const sintomasLista = (paciente.sintomas && paciente.sintomas.length) ? paciente.sintomas.join(', ') : 'Nenhum';
@@ -144,8 +144,11 @@
     if (index !== -1) {
       const paciente = fila[index];
       if (confirm(`Chamar ${paciente.nome} para ${consultorioAtual}?`)) {
+        // Remove da fila
         fila.splice(index, 1);
         localStorage.setItem('fila', JSON.stringify(fila));
+        
+        // Salva o paciente chamado (dispara evento 'storage' nas outras abas automaticamente)
         localStorage.setItem('pacienteChamado', JSON.stringify({
           nome: paciente.nome,
           risco: paciente.risco,
@@ -153,11 +156,14 @@
           especialidade: especialidadeAtual,
           timestamp: new Date().toISOString()
         }));
-        window.dispatchEvent(new StorageEvent('storage', { key: 'pacienteChamado' }));
+        
+        // Atualiza a lista na tela do médico
         carregarFila();
-        alert(`Paciente ${paciente.nome} chamado para ${consultorioAtual}!`);
+        alert(`✅ Paciente ${paciente.nome} chamado para ${consultorioAtual}!`);
       }
-    } else { alert('Paciente não encontrado na fila.'); }
+    } else { 
+      alert('Paciente não encontrado na fila.'); 
+    }
   }
 
   function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
