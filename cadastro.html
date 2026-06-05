@@ -239,9 +239,18 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Telefone *</label>
-        <input type="tel" id="telefone" placeholder="11999999999" required maxlength="11" inputmode="numeric" pattern="[0-9]*" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-      </div>
+  <label>Telefone *</label>
+  <input
+    type="text"
+    id="telefone"
+    placeholder="(DD)12345678"
+    required
+    maxlength="12"
+  >
+  <small id="telefoneErro" style="color:#ff6b6b; display:none;">
+    Informe um telefone válido no formato (83)12345678
+  </small>
+</div>
       <div class="form-group">
         <label>CPF *</label>
         <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
@@ -264,6 +273,48 @@
 <script>
   // Aguarda o DOM carregar completamente
   document.addEventListener('DOMContentLoaded', function() {
+    const telefoneInput = document.getElementById('telefone');
+const telefoneErro = document.getElementById('telefoneErro');
+
+// Máscara automática
+telefoneInput.addEventListener('input', function (e) {
+
+  let valor = e.target.value.replace(/\D/g, '');
+
+  // Limita a 10 dígitos (DDD + telefone)
+  valor = valor.substring(0, 10);
+
+  if (valor.length >= 2) {
+    valor = '(' + valor.substring(0, 2) + ')' + valor.substring(2);
+  }
+
+  e.target.value = valor;
+
+  validarTelefone();
+});
+
+function validarTelefone() {
+
+  const telefone = telefoneInput.value;
+
+  // Formato obrigatório: (83)12345678
+  const regex = /^\(\d{2}\)\d{8}$/;
+
+  if (telefone === '') {
+    telefoneErro.style.display = 'none';
+    return false;
+  }
+
+  if (!regex.test(telefone)) {
+    telefoneErro.style.display = 'block';
+    telefoneInput.style.borderColor = '#ff4d4d';
+    return false;
+  }
+
+  telefoneErro.style.display = 'none';
+  telefoneInput.style.borderColor = '';
+  return true;
+}
     // Seleção de faixa etária
     const cards = document.querySelectorAll('.idade-card');
     cards.forEach(card => {
