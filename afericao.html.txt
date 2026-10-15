@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedTriage — Sistema de Aferição</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/afericao.css">
+</head>
+<body>
+<div class="totem">
+  <!-- Cabeçalho azul com logo + nome do paciente -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">❤️</div>
+      <div class="header-info">
+        <div class="nome">MedTriage</div>
+        <div class="sub">Sistema Inteligente de Triagem</div>
+      </div>
+    </div>
+    <div class="paciente-box">
+      <small>Paciente Atual</small>
+      <strong id="nomePaciente">Carregando...</strong>
+    </div>
+  </div>
+
+  <!-- Barra de progresso visual (etapa atual do fluxo) -->
+  <div class="prog"><div class="prog-fill"></div></div>
+
+  <div class="main">
+    <div class="left">
+      <div>
+        <div class="titulo" style="margin-top:10px">
+          Aferição Inteligente<br>de Pressão e Temperatura
+        </div>
+        <div class="desc" style="margin-top:14px">
+          Sistema com leituras simuladas. Temperatura ≥ 37.2°C indica febre;
+          pressão ≥ 110/80 mmHg é considerada elevada.
+        </div>
+      </div>
+
+      <!-- Sensores (pressão + temperatura) -->
+      <div class="sensores">
+        <!-- Cartão do sensor de pressão -->
+        <div class="sensor aguardando" id="pressaoCard">
+          <div class="sensor-ico">💉</div>
+          <div class="sensor-info">
+            <div class="sensor-nome">Pressão Arterial</div>
+            <div class="sensor-msg" id="msgPressao">Encaixe o pulso esquerdo no medidor</div>
+            <!-- Barra de progresso interna do sensor -->
+            <div class="barra-wrap" id="wrapPressao"><div class="barra" id="barraPressao"></div></div>
+          </div>
+          <div class="sensor-valor" id="valorPressao">— / —</div>
+        </div>
+
+        <!-- Cartão do sensor de temperatura -->
+        <div class="sensor aguardando" id="tempCard">
+          <div class="sensor-ico">🌡️</div>
+          <div class="sensor-info">
+            <div class="sensor-nome">Temperatura Corporal</div>
+            <div class="sensor-msg" id="msgTemp">Aproxime a testa do sensor infravermelho</div>
+            <div class="barra-wrap" id="wrapTemp"><div class="barra" id="barraTemp"></div></div>
+          </div>
+          <div class="sensor-valor" id="valorTemp">— °C</div>
+        </div>
+      </div>
+
+      <!-- Resultado final da aferição (escondido até medir) -->
+      <div class="resultado" id="resultado">
+        <div class="res-ico" id="resIco">✅</div>
+        <div>
+          <div class="res-titulo" id="resTitulo">Sinais Normais</div>
+          <div class="res-desc" id="resDesc">Pressão arterial e temperatura dentro da média clínica.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé com ações -->
+  <div class="footer">
+    <button class="btn btn-sec" onclick="voltarCadastro()">← Voltar ao Cadastro</button>
+    <button class="btn btn-sec" onclick="resetar()">↺ Reiniciar</button>
+    <button class="btn btn-main" id="btnMain" onclick="iniciar()">
+      <span id="btnTxt">Iniciar Aferição</span>
+    </button>
+    <button class="btn btn-main" onclick="avancarTriagem()">Próxima Etapa →</button>
+  </div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/pages/afericao.js"></script>
+</body>
+</html>

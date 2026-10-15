@@ -1,0 +1,184 @@
+/* =========================================================
+   AFERICAO.CSS — Estilos do totem de aferição
+   ========================================================= */
+
+/* Corpo com fundo radial azul/verde */
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(91,184,245,.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(0,196,140,.06), transparent 30%),
+    #07131D;
+  display: flex; align-items: center; justify-content: center;
+  padding: 30px;
+}
+
+/* Container principal "totem" */
+.totem {
+  width: min(1250px, 100%);
+  min-height: 760px;
+  background: #101C29;
+  border-radius: 28px;
+  border: 1px solid rgba(91,184,245,.12);
+  box-shadow: 0 0 0 5px rgba(91,184,245,.03), 0 30px 100px rgba(0,0,0,.75);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* Cabeçalho gradiente */
+.header {
+  background: linear-gradient(135deg, #1A5F8A, #3A9FE0);
+  padding: 24px 34px;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+}
+.header-left { display: flex; align-items: center; gap: 18px; }
+.logo {
+  width: 58px; height: 58px; background: white; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+.header-info .nome { color: white; font-size: 25px; font-weight: 800; }
+.header-info .sub {
+  color: rgba(255,255,255,.7); font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase; margin-top: 4px;
+}
+
+/* Caixa com nome do paciente */
+.paciente-box {
+  background: rgba(255,255,255,.08);
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.1);
+  color: white; min-width: 260px;
+}
+.paciente-box small {
+  display: block; opacity: .7; margin-bottom: 4px;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+}
+.paciente-box strong { font-size: 15px; }
+
+/* Barra de progresso superior */
+.prog { height: 5px; background: rgba(255,255,255,.08); }
+.prog-fill { height: 100%; width: 66%; background: linear-gradient(90deg, #3A9FE0, #5BB8F5); }
+
+/* Área principal */
+.main { flex: 1; display: grid; grid-template-columns: 1fr; gap: 28px; padding: 34px; }
+.left { display: flex; flex-direction: column; gap: 22px; }
+.etapa { color: #5BB8F5; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
+.titulo { color: #E8F4FF; font-size: 44px; line-height: 1.08; font-weight: 800; }
+.desc { color: #8AA6BF; line-height: 1.7; font-size: 15px; max-width: 720px; }
+
+/* ---------- Sensores ---------- */
+.sensores { display: flex; flex-direction: column; gap: 18px; }
+.sensor {
+  background: #162535;
+  border-radius: 22px;
+  border: 1.5px solid rgba(91,184,245,.12);
+  padding: 24px;
+  display: flex; align-items: center; gap: 18px;
+  transition: .3s;
+}
+/* Estados visuais do sensor conforme a leitura */
+.sensor.aguardando { border-color: rgba(91,184,245,.12); }
+.sensor.medindo    { border-color: #3A9FE0; box-shadow: 0 0 0 4px rgba(58,159,224,.12); }
+.sensor.ok         { border-color: #00C48C; box-shadow: 0 0 0 4px rgba(0,196,140,.12); }
+.sensor.alerta     { border-color: #FFB300; box-shadow: 0 0 0 4px rgba(255,179,0,.10); }
+.sensor.critico    { border-color: #E53935; box-shadow: 0 0 0 4px rgba(229,57,53,.12); }
+
+/* Ícone do sensor */
+.sensor-ico {
+  width: 70px; height: 70px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px;
+  background: rgba(91,184,245,.08);
+  flex-shrink: 0;
+}
+.sensor.ok      .sensor-ico { background: rgba(0,196,140,.12); }
+.sensor.alerta  .sensor-ico { background: rgba(255,179,0,.12); }
+.sensor.critico .sensor-ico { background: rgba(229,57,53,.12); }
+
+.sensor-info { flex: 1; }
+.sensor-nome { color: #E8F4FF; font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+.sensor-msg { color: #8AA6BF; font-size: 14px; line-height: 1.6; }
+.sensor-valor { min-width: 190px; text-align: right; font-size: 30px; font-weight: 800; color: white; }
+.sensor.ok      .sensor-valor { color: #00C48C; }
+.sensor.alerta  .sensor-valor { color: #FFB300; }
+.sensor.critico .sensor-valor { color: #E53935; }
+
+/* Barra de progresso interna (durante a medição) */
+.barra-wrap {
+  margin-top: 12px; height: 6px;
+  background: rgba(255,255,255,.08);
+  border-radius: 999px; overflow: hidden;
+  display: none; /* aparece só durante a medição */
+}
+.barra { width: 0%; height: 100%; background: linear-gradient(90deg, #3A9FE0, #5BB8F5); }
+
+/* ---------- Resultado final ---------- */
+.resultado {
+  display: none;
+  align-items: center; gap: 18px;
+  padding: 24px; border-radius: 22px;
+  animation: fade .4s ease;
+}
+.resultado.leve     { background: rgba(0,196,140,.08); border: 1.5px solid #00C48C; }
+.resultado.moderado { background: rgba(255,179,0,.08); border: 1.5px solid #FFB300; }
+.resultado.grave    { background: rgba(229,57,53,.08); border: 1.5px solid #E53935; }
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.res-ico { font-size: 55px; }
+.res-titulo { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.res-desc { color: #8AA6BF; line-height: 1.7; font-size: 14px; }
+.resultado.leve     .res-titulo { color: #00C48C; }
+.resultado.moderado .res-titulo { color: #FFB300; }
+.resultado.grave    .res-titulo { color: #E53935; }
+
+/* ---------- Rodapé com botões ---------- */
+.footer {
+  padding: 24px 34px;
+  border-top: 1px solid rgba(91,184,245,.12);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.btn {
+  border: none; border-radius: 16px;
+  padding: 18px 22px;
+  font-size: 16px; font-weight: 800;
+  cursor: pointer; transition: .2s;
+}
+.btn-main {
+  background: linear-gradient(135deg, #3A9FE0, #5BB8F5);
+  color: white;
+  box-shadow: 0 10px 25px rgba(58,159,224,.35);
+}
+.btn-main:hover { transform: translateY(-2px); }
+.btn-sec {
+  background: rgba(255,255,255,.05); color: #8AA6BF;
+  border: 1px solid rgba(91,184,245,.12);
+}
+.btn-sec:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+
+/* Spinner de carregamento dentro do botão */
+.spin {
+  width: 20px; height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: giro .7s linear infinite;
+  margin: auto;
+}
+@keyframes giro { to { transform: rotate(360deg); } }
+
+/* Responsividade em telas menores */
+@media (max-width: 1000px) {
+  .titulo { font-size: 36px; }
+  .sensor { flex-direction: column; align-items: flex-start; }
+  .sensor-valor { text-align: left; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .paciente-box { width: 100%; }
+}

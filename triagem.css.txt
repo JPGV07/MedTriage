@@ -1,0 +1,137 @@
+/* =========================================================
+   TRIAGEM.CSS — Estilos da tela de triagem inteligente
+   ========================================================= */
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #133b5c 0%, #08131d 45%, #000000 100%);
+  padding: 30px 20px;
+  position: relative;
+}
+body::before, body::after {
+  content: ""; position: absolute;
+  width: 500px; height: 500px;
+  filter: blur(120px); z-index: 0;
+}
+body::before { background: rgba(0,255,150,.08); top: -120px;    right: -100px; }
+body::after  { background: rgba(0,120,255,.1);  bottom: -150px; left: -120px; }
+
+/* Card principal */
+.container {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  background: rgba(12,18,28,.82);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 32px; overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,.6), 0 0 20px rgba(0,180,255,.08);
+}
+
+/* Cabeçalho azul */
+.header {
+  background: linear-gradient(135deg,#008cff,#00b7ff);
+  padding: 30px; text-align: center; color: white;
+}
+.header h2 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+.header p { opacity: .95; }
+
+/* Bloco de dados do paciente */
+.paciente-info {
+  background: rgba(0,0,0,.3);
+  padding: 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.paciente-info h3 { color: #00b7ff; margin-bottom: 18px; }
+.paciente-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 15px;
+}
+.info-item {
+  background: rgba(0,0,0,.35);
+  padding: 14px 16px;
+  border-radius: 24px;
+  border-left: 4px solid #00b7ff;
+}
+.info-label { color: #00b7ff; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.info-value { margin-top: 6px; color: white; font-weight: 600; }
+
+/* Corpo do formulário */
+.form-body { padding: 30px; }
+.sintomas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+  gap: 25px; margin: 25px 0;
+}
+.categoria {
+  padding: 20px; border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.categoria h3 { color: white; font-size: 18px; margin-bottom: 16px; }
+.grid-opcoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap: 12px;
+}
+
+/* Labels dos sintomas (checkbox estilizado) */
+label {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 40px;
+  background: rgba(0,0,0,.3);
+  border: 1px solid rgba(255,255,255,.12);
+  cursor: pointer; transition: .15s;
+  color: #ddd; font-size: 14px; font-weight: 500;
+}
+label:hover {
+  transform: translateY(-2px);
+  background: rgba(0,140,255,.2);
+  border-color: #00b7ff;
+}
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: #008cff; }
+
+/* Prévia do risco */
+.prioridade-preview {
+  margin-top: 25px;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(0,180,255,.4);
+  border-radius: 28px;
+  padding: 24px;
+  display: flex; justify-content: center; align-items: center; text-align: center;
+}
+.prioridade-badge {
+  display: flex; justify-content: center; align-items: center; text-align: center;
+  min-width: 260px; padding: 16px 38px; border-radius: 50px;
+  font-size: 24px; font-weight: 800; letter-spacing: .5px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  transition: .2s;
+}
+.verde    { background: #22c55e; color: white; }
+.amarelo  { background: #eab308; color: black; }
+.vermelho { background: #ef4444; color: white; }
+
+/* Aviso de regra do admin (aparece quando alguma regra bate) */
+.aviso-regra {
+  margin-top: 20px; padding: 18px 24px;
+  border-radius: 28px;
+  background: rgba(0,0,0,0.65);
+  border-left: 6px solid #ffaa00;
+  display: none;
+  color: #ffecb3;
+  font-size: 18px; font-weight: 600; letter-spacing: 0.3px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Botões inferiores */
+.btn-group { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+.btn { flex: 1; border: none; border-radius: 60px; padding: 16px; font-size: 18px; font-weight: 700; cursor: pointer; transition: .2s; }
+.btn-primary { background: linear-gradient(135deg,#008cff,#00b7ff); color: white; box-shadow: 0 8px 20px rgba(0,140,255,.3); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,140,255,.4); }
+.btn-secondary { background: rgba(255,255,255,.05); color: #ddd; }
+.btn-secondary:hover { background: rgba(255,255,255,.1); transform: translateY(-2px); }
+
+footer {
+  text-align: center; padding: 20px;
+  font-size: 12px; color: #8aa0ae;
+  background: rgba(0,0,0,.3);
+}

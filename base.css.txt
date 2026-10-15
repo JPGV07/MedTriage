@@ -1,0 +1,67 @@
+/* =========================================================
+   BASE.CSS — Estilos globais compartilhados por TODAS as páginas
+   =========================================================
+   Aqui ficam: reset, variáveis de cor, tipografia padrão
+   e classes utilitárias reaproveitadas (ex: badges de risco).
+   ========================================================= */
+
+/* RESET — zera margens/paddings nativos e padroniza o box model */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* padding e border não aumentam o tamanho final */
+}
+
+/* VARIÁVEIS GLOBAIS — cores e fontes centralizadas.
+   Mudar aqui reflete em todas as páginas. */
+:root {
+  --azul: #5BB8F5;           /* azul claro principal */
+  --azul2: #3A9FE0;          /* azul intermediário */
+  --azulEsc: #1A5F8A;        /* azul escuro para gradientes */
+  --verde: #22c55e;          /* sucesso / risco leve */
+  --amarelo: #eab308;        /* atenção / risco moderado */
+  --vermelho: #ef4444;       /* crítico / risco grave */
+  --bg: #07131D;             /* fundo base escuro */
+  --card: #101C29;           /* fundo de cards */
+  --card2: #162535;          /* fundo de cards secundário */
+  --txt: #E8F4FF;            /* texto principal */
+  --txt2: #8AA6BF;           /* texto secundário (mais suave) */
+  --borda: rgba(91, 184, 245, .12); /* borda azulada translúcida */
+  --fonte: 'Inter', sans-serif;
+}
+
+/* Corpo padrão — fonte, cor e suavização de texto */
+html, body { min-height: 100%; }
+body {
+  font-family: var(--fonte);
+  color: var(--txt);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Herança de fonte para elementos de formulário */
+button, input, select, textarea { font-family: inherit; }
+
+/* Links sem sublinhado e herdando cor do pai */
+a { text-decoration: none; color: inherit; }
+
+/* ---------- BADGES DE RISCO ----------
+   Usados em admin, medico e triagem para exibir
+   a classificação de risco (vermelho/amarelo/verde). */
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.badge.vermelho { background: rgba(239,68,68,.2);  color: #fca5a5; border: 1px solid var(--vermelho); }
+.badge.amarelo  { background: rgba(234,179,8,.2);  color: #fef08a; border: 1px solid var(--amarelo); }
+.badge.verde    { background: rgba(34,197,94,.2);  color: #bbf7d0; border: 1px solid var(--verde); }
+
+/* ---------- COLUNA DE TEXTO EM TABELAS ----------
+   Impede que textos longos estourem a largura da célula. */
+.coluna-texto {
+  max-width: 200px;
+  white-space: normal;
+  word-break: break-word;
+}

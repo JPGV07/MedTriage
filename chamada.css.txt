@@ -1,0 +1,71 @@
+/* =========================================================
+   CHAMADA.CSS — Painel de TV para chamada de pacientes
+   ========================================================= */
+
+body {
+  background: radial-gradient(circle at top, #05d1ec 0%, #04dbd1 45%, #07ebc5 100%);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+/* Painel central grande */
+.painel {
+  max-width: 800px; width: 100%;
+  background: rgba(12,18,28,0.9);
+  backdrop-filter: blur(18px);
+  border-radius: 60px;
+  padding: 50px 30px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,180,255,0.1);
+  border: 1px solid rgba(232,238,232,0.1);
+  transition: all 0.3s;
+}
+
+/* Títulos e textos */
+.titulo {
+  font-size: 2rem; font-weight: 700;
+  background: linear-gradient(90deg, #0b8dff, #00b4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
+}
+.paciente-nome {
+  font-size: 3.5rem; font-weight: 800;
+  margin: 30px 0; word-break: break-word;
+  color: white;
+}
+.prioridade-badge {
+  display: inline-block;
+  padding: 15px 40px;
+  border-radius: 80px;
+  font-weight: 800; font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.consultorio-info {
+  margin-top: 30px;
+  font-size: 2rem; font-weight: 700;
+  background: rgba(0,0,0,0.5);
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 60px;
+  color: #ffd966;
+}
+.mensagem-aviso { margin-top: 40px; font-size: 1.4rem; font-weight: 500; color: #ccc; }
+.aguardando { color: #aaa; font-size: 1.8rem; font-weight: 500; }
+
+/* Cores do badge de prioridade */
+.vermelho-bg { background: #ef4444; color: white; }
+.amarelo-bg  { background: #eab308; color: black; }
+.verde-bg    { background: #22c55e; color: white; }
+
+footer { margin-top: 40px; font-size: 0.9rem; color: #8aa0ae; }
+
+/* Animação de pisca-pisca quando há chamada ativa */
+@keyframes pisca {
+  0%   { opacity: 1;    transform: scale(1); }
+  50%  { opacity: 0.85; transform: scale(1.01); }
+  100% { opacity: 1;    transform: scale(1); }
+}
+.chamado { animation: pisca 1s infinite; }
