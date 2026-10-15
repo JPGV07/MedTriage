@@ -1,0 +1,133 @@
+/* =========================================================
+   ADMIN.CSS — Estilos do painel administrativo
+   ========================================================= */
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #133b5c 0%, #08131d 45%, #000000 100%);
+  padding: 30px 20px;
+  color: white;
+}
+
+/* Card principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(12,18,28,0.82);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 32px;
+  padding: 30px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+/* Títulos */
+h2 { font-size: 26px; font-weight: 800; margin-bottom: 20px; color: #00b7ff; text-align: center; }
+h3 { font-size: 18px; margin-bottom: 12px; color: #ddd; }
+
+/* Blocos de seção */
+.secao {
+  background: rgba(0,0,0,0.3);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 25px;
+}
+
+/* Grid de sintomas (checkboxes) */
+.sintomas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 15px;
+}
+/* Estilização da barra de rolagem */
+.sintomas-grid::-webkit-scrollbar { width: 6px; }
+.sintomas-grid::-webkit-scrollbar-thumb { background: rgba(0,183,255,0.3); border-radius: 10px; }
+
+/* Labels dos sintomas */
+label {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.05);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.2s;
+}
+label:hover { border-color: #00b7ff; background: rgba(0,183,255,0.1); }
+input[type="checkbox"] { accent-color: #00b7ff; }
+
+/* Linha de configuração da regra */
+.config-linha { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px; }
+.campo { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+
+/* Inputs e selects */
+select, input[type="text"] {
+  background: #08131d;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 12px;
+  border-radius: 12px;
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+}
+select:focus, input[type="text"]:focus { border-color: #00b7ff; outline: none; }
+
+/* Botões */
+.btn {
+  padding: 14px 28px;
+  font-size: 16px; font-weight: 700;
+  border: none; border-radius: 12px;
+  cursor: pointer; transition: 0.2s;
+  width: 100%; margin-top: 15px;
+}
+.btn-primary { background: linear-gradient(135deg, #008cff, #00b7ff); color: white; }
+.btn-primary:hover { transform: translateY(-2px); }
+
+.btn-danger {
+  background: #ef4444; color: white;
+  padding: 6px 12px; font-size: 12px;
+  border-radius: 6px; width: auto; margin: 0;
+  border: none; cursor: pointer;
+}
+
+/* Tabelas */
+.tabela-regras { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+.tabela-regras th, .tabela-regras td {
+  padding: 12px; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tabela-regras th { color: #00b7ff; font-weight: 600; }
+
+.fila-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.fila-table th, .fila-table td {
+  padding: 10px; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.fila-table th { color: #00b7ff; }
+
+/* Botão de remover paciente */
+.btn-remover {
+  background: #dc2626; color: white;
+  border: none; padding: 4px 10px;
+  border-radius: 20px; cursor: pointer;
+  font-size: 12px;
+}
+.btn-remover:hover { background: #b91c1c; }
+
+/* Botão sair */
+.btn-sair {
+  background: rgba(255,255,255,0.1);
+  border: none; padding: 8px 20px;
+  border-radius: 40px; color: white; cursor: pointer;
+  margin-left: 15px;
+}
+.btn-sair:hover { background: rgba(255,255,255,0.2); }
+
+/* Alinhamento do botão de sair no topo */
+.header-actions { display: flex; justify-content: flex-end; margin-bottom: 15px; }
