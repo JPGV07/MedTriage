@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel médico para gerenciamento de pacientes e atendimentos.">
+    <title>Painel do Médico | MedTriage</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* Ícone e botão limpar dentro do input de CPF */
+        .search-box .input-wrapper input {
+            padding-left: 44px;
+            padding-right: 44px;
+        }
+
+        .search-box .input-icon-left {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .search-box .icon-btn svg { pointer-events: none; }
+
+        /* Garante altura consistente entre input e botão Buscar */
+        .search-box .btn {
+            height: 48px;
+            padding: 0 24px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .search-box .btn { width: 100%; height: 48px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cabeçalho e navegação -->
+    <header class="patient-header">
+        <div class="patient-header-container">
+
+            <div class="brand" style="margin-bottom: 0;">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="4"
+                        fill="currentColor"
+                    />
+                    <path
+                        d="M12 6V18M6 12H18"
+                        stroke="white"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <span>MedTriage</span>
+            </div>
+
+            <nav class="patient-nav" aria-label="Navegação principal">
+                <a href="../tela_medico/medico_dashboard.html" class="active" aria-current="page">
+                    Meus pacientes
+                </a>
+
+                <a href="medico_consultas.html">
+                    Ver consultas
+                </a>
+
+                <a href="medico_historico_atendimentos.html">
+                    Histórico de atendimentos
+                </a>
+
+                <a href="medico_perfil.html">
+                    Meu Perfil
+                </a>
+            </nav>
+
+            <div class="patient-user-area">
+                <span class="user-greeting" id="user-greeting">
+                    Olá, [Nome]
+                </span>
+
+                <a  
+                    href="../index.html"
+                    type="button"
+                    id="btn-logout"
+                    class="btn btn-outline"
+                    style="padding: 8px 16px; width: auto; text-decoration: none;"
+                >
+                    Sair
+            </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="dashboard-main">
+
+        <!-- Boas-vindas -->
+        <section class="welcome-section">
+            <h1 id="welcome-title">
+                Olá,[Nome]
+            </h1>
+
+            <p>Seus pacientes e atendimentos.</p>
+        </section>
+
+        <!-- Busca de pacientes -->
+        <section class="search-box" aria-label="Buscar pacientes">
+
+            <div class="input-group">
+                <label for="busca-paciente-cpf">
+                    Buscar paciente por CPF
+                </label>
+
+                <div class="input-wrapper">
+                    <span class="input-icon-left" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <circle cx="11" cy="11" r="7"/>
+                            <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                        </svg>
+                    </span>
+
+                    <input
+                        type="text"
+                        id="busca-paciente-cpf"
+                        placeholder="000.000.000-00"
+                        maxlength="14"
+                        inputmode="numeric"
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        id="btn-limpar-cpf"
+                        aria-label="Limpar CPF"
+                        style="display: none;"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                            <line x1="6" y1="18" x2="18" y2="6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                id="btn-buscar-paciente"
+                class="btn btn-primary"
+            >
+                Buscar
+            </button>
+
+        </section>
+
+        <!-- Resultado da busca -->
+        <section
+            id="resultado-busca"
+            hidden
+            aria-label="Resultados da busca"
+        >
+
+            <div class="section-header-flex">
+                <h2 class="section-title">
+                    Pacientes encontrados
+                </h2>
+
+                <button
+                    type="button"
+                    id="btn-fechar-busca"
+                    class="btn btn-outline"
+                >
+                    Limpar busca
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Último atendimento</th>
+                            <th scope="col">Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabela-pacientes-body">
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- Estatísticas do médico -->
+        <section class="stats-grid" aria-label="Estatísticas">
+
+            <article class="stat-card">
+                <div class="stat-icon" aria-hidden="true">
+                    👥
+                </div>
+
+                <div class="stat-info">
+                    <h3 id="total-pacientes">--</h3>
+                    <p>Pacientes vinculados</p>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon" aria-hidden="true">
+                    📅
+                </div>
+
+                <div class="stat-info">
+                    <h3 id="total-consultas">--</h3>
+                    <p>Consultas agendadas</p>
+                </div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-icon" aria-hidden="true">
+                    🩺
+                </div>
+
+                <div class="stat-info">
+                    <h3 id="total-atendimentos">--</h3>
+                    <p>Atendimentos realizados</p>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Próxima consulta -->
+        <section
+            class="next-appointment-card"
+            id="card-proxima-consulta"
+            hidden
+        >
+
+            <div class="appointment-info">
+
+                <span class="badge-waiting">
+                    PRÓXIMA CONSULTA
+                </span>
+
+                <h2 id="proxima-consulta-paciente">
+                    -
+                </h2>
+
+                <p id="proxima-consulta-info">
+                    -
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="iniciarAtendimento()"
+            >
+                Iniciar atendimento
+            </button>
+
+        </section>
+
+        <!-- Estado sem consultas -->
+        <section
+            class="next-appointment-card empty-state"
+            id="card-sem-consulta"
+        >
+
+            <div class="appointment-info">
+                <h2>
+                    Nenhuma consulta aguardando atendimento.
+                </h2>
+
+                <p>
+                    Suas próximas consultas aparecerão aqui.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../js/medico_js/configName.js"></script>
+
+</body>
+</html>
