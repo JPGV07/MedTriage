@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="theme-admin">
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage <span class="brand-badge brand-badge-admin">Admin</span></span>
+      </div>
+
+      <nav class="patient-nav" aria-label="Navegação principal">
+        <a href="admin_dashboard.html" class="active" aria-current="page">Painel</a>
+      </nav>
+
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting">Olá, Admin</span>
+        <button id="btn-logout" class="btn btn-outline" style="padding: 8px 16px; width: auto;">
+          onclick="window.location.href="../login_profissional.html">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <div class="welcome-section">
+      <h1>Painel administrativo</h1>
+      <p>Gerencie médicos, pacientes e filas de atendimento.</p>
+    </div>
+
+    <p id="aviso-pagina"
+       style="display:none; margin-bottom:20px; padding:12px 16px;
+              border-radius:8px; font-size:14px;"></p>
+
+    <!-- Estatísticas globais -->
+    <section class="stats-grid" aria-label="Estatísticas gerais">
+      <article class="stat-card">
+        <div class="stat-icon" aria-hidden="true">🩺</div>
+        <div class="stat-info">
+          <h3 id="stat-medicos">--</h3>
+          <p>Médicos cadastrados</p>
+        </div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon" aria-hidden="true">👥</div>
+        <div class="stat-info">
+          <h3 id="stat-pacientes">--</h3>
+          <p>Pacientes cadastrados</p>
+        </div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon" aria-hidden="true">📅</div>
+        <div class="stat-info">
+          <h3 id="stat-consultas">--</h3>
+          <p>Consultas agendadas</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Abas -->
+    <section class="filtros-consulta" role="tablist" aria-label="Seções administrativas">
+
+      <button type="button" class="filtro-btn active" data-aba="medicos"
+              role="tab" aria-selected="true" aria-pressed="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Médicos
+        <span class="filtro-count" id="badge-medicos">–</span>
+      </button>
+
+      <button type="button" class="filtro-btn" data-aba="pacientes"
+              role="tab" aria-selected="false" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Pacientes
+        <span class="filtro-count" id="badge-pacientes">–</span>
+      </button>
+
+      <button type="button" class="filtro-btn" data-aba="filas"
+              role="tab" aria-selected="false" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="8" y1="6"  x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6"  x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        Filas de espera
+      </button>
+
+    </section>
+
+    <!-- Conteúdo dinâmico -->
+    <div id="conteudo-admin"></div>
+
+  </main>
+
+  <script src="js/admin_js/admin_dashboard.js"></script>
+</body>
+</html>
