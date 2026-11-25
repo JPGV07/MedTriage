@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Especialista - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage</span>
+      </div>
+
+      <nav class="patient-nav">
+        <a href="../paciente.html">Início</a>
+        <a href="../tela_paciente/especialistas.html" class="active">Agendar consulta</a>
+        <a href="#">Histórico de laudos</a>
+      </nav>
+
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting"> </span>
+        <a href="../index.html"  id="btn-logout" class="btn-outline" style="padding: 8px 16px; width: auto; text-decoration: none;">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    
+    <div class="welcome-section">
+      <h1>Encontre um especialista</h1>
+      <p>Escolha a especialidade e a cidade para ver quem está disponível.</p>
+    </div>
+
+    <div class="search-box">
+      <div class="input-group">
+        <label for="filtro-especialidade">Especialidade ou doença</label>
+      <select id="filtro-especialidade">
+ <option value="Todas">Todas as especialidades</option>
+<option value="CLINICO_GERAL">Clínica geral</option>
+<option value="PEDIATRA">Pediatria</option>
+<option value="GINECOLOGISTA">Ginecologia</option>
+<option value="CARDIOLOGISTA">Cardiologia</option>
+<option value="DERMANTOLOGISTA">Dermatologia</option>
+<option value="OFTALMOLOGISTA">Oftalmologia</option>
+<option value="ORTOPEDISTA">Ortopedia</option>
+<option value="NEUROLOGISTA">Neurologia</option>
+<option value="PSIQUIATRA">Psiquiatria</option>
+<option value="ENDOCRINOLOGISTA">Endocrinologia</option>
+</select>
+      </div>
+
+      <div class="input-group">
+        <label for="filtro-cidade">Cidade ou região</label>
+        <select id="filtro-cidade">
+           <option value="João Pessoa">João Pessoa</option>
+            <option value="Campina Grande">Campina Grande</option>
+            <option value="Patos">Patos</option>
+            <option value="Sousa">Sousa</option>
+            <option value="Cajazeiras">Cajazeiras</option>
+        </select>
+      </div>
+
+      <button id="btn-buscar" class="btn btn-primary">Buscar</button>
+    </div>
+
+    <!-- Título dos resultados -->
+    <h2 class="section-title" id="titulo-resultados" style="margin-top: 32px;">Médicos encontrados</h2>
+
+    <!-- Container onde o JavaScript vai injetar os cards dos médicos -->
+    <div id="lista-medicos" class="doctor-list"></div>
+
+  </main>
+
+  <script src="../js/paciente_js/configName.js"></script>
+  <script src="../js/paciente_js/buscarMedico.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Consulta - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage</span>
+      </div>
+      <nav class="patient-nav">
+        <a href="paciente.html">Início</a>
+        <a href="especialistas.html">Agendar consulta</a>
+        <a href="lados.html">Histórico de laudos</a>
+      </nav>
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting">Olá, [Nome]</span>
+        <button id="btn-logout" class="btn btn-outline" style="padding: 8px 16px; width: auto;"
+        onclick="window.location.href='../index.html'"></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <a href="paciente.html" class="back-link-page">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Voltar para o painel
+    </a>
+
+    <div class="welcome-section">
+      <h1>Detalhes da consulta</h1>
+    </div>
+
+    <p id="aviso-pagina"
+       style="display:none; margin-bottom:20px; padding:12px 16px;
+              border-radius:8px; font-size:14px;"></p>
+
+    <div class="detalhes-card">
+      <div class="detalhes-status-box">
+        <span id="detalhe-status" class="badge-waiting">—</span>
+      </div>
+
+      <div class="detalhes-grid">
+        <div class="detalhes-item"><label>Data e horário</label><p id="detalhe-data">—</p></div>
+        <div class="detalhes-item"><label>Médico</label><p id="detalhe-medico">—</p></div>
+        <div class="detalhes-item"><label>Serviço</label><p id="detalhe-servico">—</p></div>
+        <div class="detalhes-item"><label>Local</label><p id="detalhe-local">—</p></div>
+        <div class="detalhes-item"><label>Tipo</label><p id="detalhe-tipo">—</p></div>
+        <div class="detalhes-item"><label>Valor</label><p id="detalhe-valor">—</p></div>
+        <div class="detalhes-item"><label>Convênio</label><p id="detalhe-convenio">—</p></div>
+        <div class="detalhes-item"><label>Confirmação</label><p id="detalhe-confirmacao">—</p></div>
+      </div>
+
+      <div class="detalhes-acoes" id="detalhes-acoes">
+        <a id="btn-reagendar" class="btn btn-outline" style="width: auto;" href="#">
+          Reagendar
+        </a>
+        <a id="btn-cancelar" class="btn btn-perigo" style="width: auto;" href="#">
+          Cancelar consulta
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/paciente_js/menu.js"></script>
+  <script src="js/paciente_js/detalhes_consulta.js"></script>
+</body>
+</html>
