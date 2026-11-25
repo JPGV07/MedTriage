@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico de Laudos - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage</span>
+      </div>
+      <nav class="patient-nav">
+        <a href="../paciente.html">Início</a>
+        <a href="../tela_paciente/especialistas.html">Agendar consulta</a>
+        <a href="../tela_paciente/lados.html" class="active">Histórico de laudos</a>
+      </nav>
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting"> </span>
+        <button id="btn-logout" class="btn-outline" style="padding: 8px 16px; width: auto;">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    
+    <div class="welcome-section">
+      <h1>Histórico de laudos</h1>
+      <p>Suas consultas e laudos. Você pode visualizar cada laudo.</p>
+    </div>
+
+    <div id="lista-laudos"></div>
+
+    <!-- Estado vazio (mostrado pelo JS se não houver laudos) -->
+    <div class="laudos-vazio" id="laudos-vazio" style="display: none;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--border-color)" stroke-width="1.5" style="margin-bottom: 16px;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <h3>Você ainda não tem laudos</h3>
+      <p>Os laudos aparecem aqui depois das suas consultas serem realizadas.</p>
+    </div>
+
+  </main>
+
+</body>
+</html>

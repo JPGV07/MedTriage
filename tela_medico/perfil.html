@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage</span>
+      </div>
+      <nav class="patient-nav" aria-label="Navegação principal">
+        <a href="medico_dashboard.html">Meus pacientes</a>
+        <a href="medico_consultas.html">Ver consultas</a>
+        <a href="medico_historico_atendimentos.html">Histórico de atendimentos</a>
+        <a href="medico_perfil.html" class="active" aria-current="page">Meu Perfil</a>
+      </nav>
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting">Olá, Dr(a). [Nome]</span>
+        <button id="btn-logout" class="btn btn-outline" style="padding: 8px 16px; width: auto;"
+        onclick="window.location.href='tela_profissional/login_profissional.html'">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <div class="welcome-section">
+      <h1>Meu Perfil</h1>
+      <p>Gerencie suas informações profissionais e de atendimento.</p>
+    </div>
+
+    <p id="aviso-pagina"
+       style="display:none; margin-bottom:20px; padding:12px 16px;
+              border-radius:8px; font-size:14px;"></p>
+
+    <form id="form-perfil-medico" class="card-dados" novalidate>
+
+      <h2 class="section-title">Dados Profissionais</h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="perfil-nome">Nome completo</label>
+          <input type="text" id="perfil-nome" required>
+          <span class="helper-text" id="helper-nome">
+            Para alterar o nome, será solicitada sua senha atual.
+          </span>
+        </div>
+
+        <div class="input-group">
+          <label for="perfil-matricula">Matrícula</label>
+          <input type="text" id="perfil-matricula" class="input-readonly" readonly>
+        </div>
+
+        <div class="input-group">
+          <label for="perfil-crm">CRM</label>
+          <input type="text" id="perfil-crm" class="input-readonly" readonly>
+        </div>
+
+        <div class="input-group">
+          <label for="perfil-especialidade">Especialidade</label>
+          <input type="text" id="perfil-especialidade" class="input-readonly" readonly>
+        </div>
+
+      </div>
+
+      <h2 class="section-title" style="margin-top: 32px;">Local e Valor</h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="perfil-cidade">Cidade</label>
+          <input type="text" id="perfil-cidade" placeholder="Ex: João Pessoa" required>
+        </div>
+
+        <div class="input-group">
+          <label for="perfil-rua">Rua / Endereço</label>
+          <input type="text" id="perfil-rua" placeholder="Ex: Av. Epitácio Pessoa, 1000, Sala 5" required>
+        </div>
+
+        <div class="input-group">
+          <label for="perfil-preco">Preço da consulta (R$)</label>
+          <input type="text" id="perfil-preco"
+                 placeholder="Ex: 250,00" inputmode="decimal" required>
+        </div>
+
+      </div>
+
+      <div style="display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap;">
+        <button type="submit" class="btn btn-primary" style="width: auto;" id="btn-salvar">
+          Salvar Alterações
+        </button>
+        <a href="medico_dashboard.html" class="btn btn-outline" style="width: auto;">
+          Voltar
+        </a>
+      </div>
+
+    </form>
+  </main>
+
+  <script src="js/profissional_js/medico_perfil.js"></script>
+</body>
+</html>

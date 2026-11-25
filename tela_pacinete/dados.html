@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Dados - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="patient-header">
+    <div class="patient-header-container">
+      <div class="brand" style="margin-bottom: 0;">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/>
+          <path d="M12 6V18M6 12H18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span>MedTriage</span>
+      </div>
+
+      <nav class="patient-nav">
+        <a href="../paciente.html">Início</a>
+        <a href="../tela_paciente/especialistas.html">Agendar consulta</a>
+        <a href="#">Histórico de laudos</a>
+      </nav>
+
+      <div class="patient-user-area">
+        <span class="user-greeting" id="user-greeting"> </span>
+        <a id="btn-logout" class="btn-outline" style="padding: 8px 16px; width: auto;">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <div class="welcome-section">
+      <h1>Meus Dados</h1>
+      <p>Confira e atualize suas informações pessoais e de saúde.</p>
+    </div>
+
+    <form id="form-meus-dados" class="card-dados">
+
+      <!-- Seção 1: Dados Básicos -->
+      <h2 class="section-title">Dados Básicos</h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="dados-nome">Nome completo</label>
+          <input type="text" id="dados-nome" placeholder="Seu nome" required>
+        </div>
+
+        <div class="input-group">
+          <label for="dados-cpf">CPF (Não editável)</label>
+          <input type="text" id="dados-cpf" readonly style="background-color: #e2e8f0; cursor: not-allowed;">
+        </div>
+
+        <div class="input-group">
+          <label for="dados-email">E-mail</label>
+          <input type="email" id="dados-email" placeholder="nome@exemplo.com">
+        </div>
+
+        <div class="input-group">
+          <label for="dados-telefone">Telefone / WhatsApp (opcional)</label>
+          <input type="text" id="dados-telefone">
+        </div>
+
+        <div class="input-group">
+          <label for="dados-nascimento">Data de nascimento</label>
+          <input type="date" id="dados-nascimento">
+        </div>
+
+        <div class="input-group">
+          <label for="dados-sexo">Sexo Biológico</label>
+          <select id="dados-sexo">
+            <option value="">Selecione...</option>
+            <option value="FEMININO">Feminino</option>
+            <option value="MASCULINO">Masculino</option>
+            <option value="INTERSEXO">Intersexo</option>
+            <option value="NOTInformad">Prefiro não informar</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="dados-genero">Identidade de Gênero</label>
+          <select id="dados-genero">
+            <option value="">Selecione...</option>
+            <option value="CISGENERO">Cisgênero</option>
+            <option value="TRANSGENERO">Transgênero</option>
+            <option value="NAO_BINARIO">Não-binário</option>
+            <option value="PREFIRO_NAO_INFORMAR">Prefiro não informar</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="dados-peso">Peso (kg)</label>
+          <input type="number" id="dados-peso" placeholder="Ex: 70" step="0.1">
+        </div>
+
+        <div class="input-group">
+          <label for="dados-altura">Altura (cm)</label>
+          <input type="number" id="dados-altura" placeholder="Ex: 175">
+        </div>
+
+      </div>
+
+      <!-- Botões -->
+      <div style="display: flex; gap: 16px; margin-top: 40px;">
+        <button type="submit" class="btn btn-primary" style="width: auto;">Salvar Alterações</button>
+        <a href="../paciente.html" class="btn btn-outline" style="width: auto;">Voltar para o Painel</a>
+      </div>
+
+    </form>
+
+  </main>
+  <script src="../js/paciente_js/configName.js"></script>
+  <script src="../js/paciente_js/dados.js"></script>
+  <script src="../js/paciente_js/menu.js"></script>
+</body>
+</html>
