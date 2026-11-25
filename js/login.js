@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstTimeText) firstTimeText.textContent = "Primeira vez aqui?";
         if (firstTimeLink) {
           firstTimeLink.textContent = "Cadastrar como médico";
-          firstTimeLink.href = "cadastro_medico.html";
+          firstTimeLink.href = "tela_medico/cadastro_medico.html";
         }
       }
     });

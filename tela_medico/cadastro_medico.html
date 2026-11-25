@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Profissional - MedTriage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="theme-professional">
+
+  <main class="dashboard-main">
+
+    <a href="medico.html" class="back-link-page">
+      <svg width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Voltar para o login
+    </a>
+
+    <div class="welcome-section">
+      <h1>Cadastro profissional</h1>
+      <p>
+        Crie seu acesso como médico. A matrícula é o seu identificador de login.
+      </p>
+    </div>
+
+    <form id="cadastro-medico-form" class="card-dados">
+
+      <h2 class="section-title">Dados profissionais</h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="medico-nome">Nome completo</label>
+          <input
+            type="text"
+            id="medico-nome"
+            placeholder="Dr(a). Nome Sobrenome"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="medico-cpf">CPF</label>
+          <input
+            type="text"
+            id="medico-cpf"
+            placeholder="000.000.000-00"
+            maxlength="14"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="medico-matricula">Matrícula</label>
+          <input
+            type="text"
+            id="medico-matricula"
+            placeholder="Ex: MED5001"
+            maxlength="12"
+            required
+          >
+          <span class="helper-text">
+            Deve começar com "MED" e ser única.
+          </span>
+        </div>
+
+        <div class="input-group">
+          <label for="medico-crm">CRM</label>
+          <input
+            type="text"
+            id="medico-crm"
+            placeholder="Ex: CRM-PB 00000"
+            maxlength="20"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="medico-especialidade">Especialidade</label>
+          <select id="medico-especialidade" required>
+            <option value="">Selecione...</option>
+            <optgroup label="Clínicas básicas">
+              <option value="Clínico geral">Clínico geral</option>
+              <option value="Pediatra">Pediatra</option>
+              <option value="Ginecologista">Ginecologista</option>
+              <option value="Cardiologista">Cardiologista</option>
+              <option value="Dermatologista">Dermatologista</option>
+              <option value="Oftalmologista">Oftalmologista</option>
+              <option value="Ortopedista">Ortopedista</option>
+              <option value="Neurologista">Neurologista</option>
+              <option value="Psiquiatra">Psiquiatra</option>
+              <option value="Endocrinologista">Endocrinologista</option>
+              <option value="Gastroenterologista">Gastroenterologista</option>
+              <option value="Otorrinolaringologista">Otorrinolaringologista</option>
+              <option value="Urologista">Urologista</option>
+              <option value="Reumatologista">Reumatologista</option>
+              <option value="Pneumologista">Pneumologista</option>
+              <option value="Nefrologista">Nefrologista</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="medico-email">E-mail (opcional)</label>
+          <input
+            type="email"
+            id="medico-email"
+            placeholder="nome@exemplo.com"
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="medico-telefone">Telefone / WhatsApp (opcional)</label>
+          <input
+            type="text"
+            id="medico-telefone"
+            placeholder="(00) 00000-0000"
+            maxlength="15"
+          >
+        </div>
+
+      </div>
+
+      <h2 class="section-title" style="margin-top: 32px;">
+        Local de atendimento
+      </h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="medico-cidade">Cidade</label>
+          <select id="medico-cidade" required>
+            <option value="">Selecione...</option>
+            <option value="João Pessoa">João Pessoa</option>
+            <option value="Campina Grande">Campina Grande</option>
+            <option value="Patos">Patos</option>
+            <option value="Sousa">Sousa</option>
+            <option value="Cajazeiras">Cajazeiras</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="medico-bairro">Bairro</label>
+          <input
+            type="text"
+            id="medico-bairro"
+            placeholder="Ex: Centro"
+            required
+          >
+        </div>
+
+        <div class="input-group" style="grid-column: 1 / -1;">
+          <label for="medico-rua">Rua / Endereço completo</label>
+          <input
+            type="text"
+            id="medico-rua"
+            placeholder="Ex: Av. Epitácio Pessoa, 1000, Sala 5"
+            required
+          >
+        </div>
+
+      </div>
+
+      <h2 class="section-title" style="margin-top: 32px;">
+        Valor da consulta
+      </h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="medico-preco">
+            Preço da consulta (R$)
+          </label>
+          <input
+            type="text"
+            id="medico-preco"
+            placeholder="Ex: 250,00"
+            inputmode="decimal"
+            required
+          >
+        </div>
+
+      </div>
+
+      <h2 class="section-title" style="margin-top: 32px;">
+        Sobre o profissional
+      </h2>
+
+      <div class="input-group">
+        <label for="medico-bio">Apresentação (opcional)</label>
+        <textarea
+          id="medico-bio"
+          class="textarea-laudo"
+          style="min-height: 120px;"
+          placeholder="Fale brevemente sobre sua experiência, formação e área de atuação. Isso aparece no seu perfil público."
+        ></textarea>
+
+        <span class="helper-text">
+          Se deixar em branco, geramos uma apresentação padrão.
+        </span>
+      </div>
+
+      <h2 class="section-title" style="margin-top: 32px;">
+        Acesso
+      </h2>
+
+      <div class="form-grid">
+
+        <div class="input-group">
+          <label for="medico-senha">Criar senha</label>
+
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="medico-senha"
+              minlength="6"
+              placeholder="Escolha uma senha"
+              required
+            >
+
+            <button type="button" class="icon-btn toggle-password">
+              <svg width="20" height="20" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+
+          <span class="helper-text">Mínimo de 6 caracteres.</span>
+        </div>
+
+        <div class="input-group">
+          <label for="medico-repetir-senha">Repetir a senha</label>
+
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="medico-repetir-senha"
+              minlength="6"
+              placeholder="Digite a senha novamente"
+              required
+            >
+
+            <button type="button" class="icon-btn toggle-password">
+              <svg width="20" height="20" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- O js/termos-medtriage.js injeta aqui o checkbox + link "termos de uso" -->
+
+      <div style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="width: auto;"
+        >
+          Criar meu acesso
+        </button>
+
+        <a href="index.html" class="btn btn-outline" style="width: auto;">
+          Cancelar
+        </a>
+
+      </div>
+
+    </form>
+
+  </main>
+
+<script src="/js/termos.js"></script>
+<script src="js/medico_js/medicoCadastro.js"></script>
+
+</body>
+</html>
