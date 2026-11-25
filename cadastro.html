@@ -67,15 +67,13 @@
           </div>
         </div>
 
-        <div class="input-group">
-          <label for="email-cadastro">E-mail (opcional)</label>
-          <div class="input-wrapper">
-            <input type="email" id="email-cadastro" placeholder="nome@exemplo.com">
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Criar meu acesso</button>
-      </form>
+          <label for="email-cadastro">E-mail</label>
+          <input type="email" id="email-cadastro" placeholder="nome@exemplo.com"
+                required autocomplete="email"
+                pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                title="Informe um e-mail válido (ex.: nome@exemplo.com)">
+                  <button type="submit" class="btn btn-primary">Criar meu acesso</button>
+                </form>
 
     </div>
   </div>
