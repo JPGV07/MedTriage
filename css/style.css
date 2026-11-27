@@ -1750,3 +1750,106 @@ body {
                 justify-content: center;
             }
         }
+/* ===== LISTA DE CHAMADA (Dashboard do Médico) ===== */
+.chamada-section {
+  margin-bottom: 32px;
+}
+
+.chamada-item {
+  align-items: center;
+  gap: 20px;
+  transition: background-color 0.2s;
+}
+
+.chamada-item.chamada-falta {
+  opacity: 0.7;
+  background: #FEF2F2;
+}
+
+.chamada-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.chamada-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-body);
+  padding: 10px 14px;
+  border-radius: 10px;
+  min-width: 72px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+}
+
+.chamada-hora {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.chamada-data {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.chamada-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.chamada-details h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chamada-details p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.chamada-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.chamada-actions .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .chamada-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chamada-info {
+    gap: 14px;
+  }
+
+  .chamada-actions {
+    justify-content: stretch;
+  }
+
+  .chamada-actions .btn {
+    flex: 1;
+    min-width: 0;
+  }
+}

@@ -18,21 +18,24 @@
         <span>MedTriage</span>
       </div>
 
-      <nav class="patient-nav">
+      <nav class="patient-nav" aria-label="Navegação principal">
         <a href="../paciente.html">Início</a>
-        <a href="../tela_paciente/especialistas.html" class="active">Agendar consulta</a>
-        <a href="#">Histórico de laudos</a>
+        <a href="especialistas.html" class="active" aria-current="page">Agendar consulta</a>
+        <a href="lados.html">Histórico de laudos</a>
       </nav>
 
       <div class="patient-user-area">
-        <span class="user-greeting" id="user-greeting"> </span>
-        <a href="../index.html"  id="btn-logout" class="btn-outline" style="padding: 8px 16px; width: auto; text-decoration: none;">Sair</a>
+        <span class="user-greeting" id="user-greeting">Olá</span>
+        <button type="button" id="btn-logout" class="btn btn-outline"
+                style="padding: 8px 16px; width: auto;">
+          Sair
+        </button>
       </div>
     </div>
   </header>
 
   <main class="dashboard-main">
-    
+
     <div class="welcome-section">
       <h1>Encontre um especialista</h1>
       <p>Escolha a especialidade e a cidade para ver quem está disponível.</p>
@@ -40,45 +43,51 @@
 
     <div class="search-box">
       <div class="input-group">
-        <label for="filtro-especialidade">Especialidade ou doença</label>
-      <select id="filtro-especialidade">
- <option value="Todas">Todas as especialidades</option>
-<option value="CLINICO_GERAL">Clínica geral</option>
-<option value="PEDIATRA">Pediatria</option>
-<option value="GINECOLOGISTA">Ginecologia</option>
-<option value="CARDIOLOGISTA">Cardiologia</option>
-<option value="DERMANTOLOGISTA">Dermatologia</option>
-<option value="OFTALMOLOGISTA">Oftalmologia</option>
-<option value="ORTOPEDISTA">Ortopedia</option>
-<option value="NEUROLOGISTA">Neurologia</option>
-<option value="PSIQUIATRA">Psiquiatria</option>
-<option value="ENDOCRINOLOGISTA">Endocrinologia</option>
-</select>
+        <label for="filtro-especialidade">Especialidade</label>
+        <select id="filtro-especialidade">
+          <option value="Todas">Todas as especialidades</option>
+          <option value="CLINICO_GERAL">Clínica geral</option>
+          <option value="PEDIATRA">Pediatria</option>
+          <option value="GINECOLOGISTA">Ginecologia</option>
+          <option value="CARDIOLOGISTA">Cardiologia</option>
+          <option value="DERMANTOLOGISTA">Dermatologia</option>
+          <option value="OFTALMOLOGISTA">Oftalmologia</option>
+          <option value="ORTOPEDISTA">Ortopedia</option>
+          <option value="NEUROLOGISTA">Neurologia</option>
+          <option value="PSIQUIATRA">Psiquiatria</option>
+          <option value="ENDOCRINOLOGISTA">Endocrinologia</option>
+        </select>
       </div>
 
       <div class="input-group">
         <label for="filtro-cidade">Cidade ou região</label>
         <select id="filtro-cidade">
-           <option value="João Pessoa">João Pessoa</option>
-            <option value="Campina Grande">Campina Grande</option>
-            <option value="Patos">Patos</option>
-            <option value="Sousa">Sousa</option>
-            <option value="Cajazeiras">Cajazeiras</option>
+          <option value="Todas">Todas as cidades</option>
+          <option value="João Pessoa">João Pessoa</option>
+          <option value="Campina Grande">Campina Grande</option>
+          <option value="Patos">Patos</option>
+          <option value="Sousa">Sousa</option>
+          <option value="Cajazeiras">Cajazeiras</option>
         </select>
       </div>
 
-      <button id="btn-buscar" class="btn btn-primary">Buscar</button>
+      <button id="btn-buscar" class="btn btn-primary" type="button">Buscar</button>
     </div>
 
-    <!-- Título dos resultados -->
-    <h2 class="section-title" id="titulo-resultados" style="margin-top: 32px;">Médicos encontrados</h2>
+    <h2 class="section-title" id="titulo-resultados" style="margin-top: 32px;">
+      Médicos encontrados
+    </h2>
 
-    <!-- Container onde o JavaScript vai injetar os cards dos médicos -->
-    <div id="lista-medicos" class="doctor-list"></div>
+    <div id="lista-medicos" class="doctor-list">
+      <p id="loading-medicos"
+         style="text-align:center; color:var(--text-muted); padding:32px 0;">
+        Carregando médicos…
+      </p>
+    </div>
 
   </main>
 
   <script src="../js/paciente_js/configName.js"></script>
-  <script src="../js/paciente_js/"></script>
+  <script src="../js/paciente_js/especialistas.js"></script>
 </body>
 </html>
